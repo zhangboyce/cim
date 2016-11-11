@@ -1,0 +1,85 @@
+
+
+.hot-column {
+    margin: 10px;
+}
+
+.hot-column .hot-column-list {
+    position: relative;
+    width: 80%;
+    right: 10%;
+    left: 10%;
+    margin-left: 20px;
+}
+
+.hot-column .hot-column-list img {
+    height: 100%;
+    width: 100%;
+}
+
+.hot-column .hot-column-list .large-column {
+    width: 48%;
+    height: 340px;
+    position: absolute;
+}
+
+.hot-column .hot-column-list .small-column {
+    width: 45%;
+    height: 166px;
+    position: relative;
+    left: 50%;
+}
+
+.hot-column .hot-column-list .bottom-small-column {
+    margin-top: 8px;
+}
+
+.hot-column .hot-column-list .large-column .column-info {
+    position: absolute;
+    width: 60%;
+    z-index: 1000;
+    top: 15%;
+    left: 20%;
+    color: #fff;
+    text-align: center;
+}
+
+.hot-column .hot-column-list .large-column .column-info .title {
+    font-size: 24px;
+    letter-spacing: 4px;
+    border-bottom: 1px solid #fff;
+    display: inline-block;
+    padding: 0 8px;
+}
+
+.hot-column .hot-column-list .large-column .column-info .detail {
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-align: left;
+    margin-top: 24px;
+}
+
+.hot-column .hot-column-list .small-column .column-title {
+    position: absolute;
+    bottom: 0;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.5);
+    text-align: center;
+    letter-spacing: 2px;
+    width: 100%;
+    padding: 8px 0;
+}
+
+.hot-column .hot-column-more {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.hot-column .hot-column-more .tag {
+    background-color: rgb(131, 17, 21);
+    width: 76px;
+    height: 30px;
+    padding-top: 9px;
+    font-size: 12px;
+    font-weight: normal;
+}

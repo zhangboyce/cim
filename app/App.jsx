@@ -1,11 +1,13 @@
 'use strict';
 
 import React from 'react';
-import Container from './layout/Container.jsx';
-import Footer from './layout/Footer.jsx';
-import Header from './layout/Header.jsx';
-import ToolBar from './layout/ToolBar.jsx';
-import Content from './Content.jsx';
+import Footer from './components/layout/Footer.jsx';
+import Header from './components/layout/Header.jsx';
+import Banner from './components/layout/Banner.jsx';
+import SearchBarContainer from './containers/SearchBarContainer.jsx';
+import HotColumnContainer from './containers/HotColumnContainer.jsx';
+import CooperativeUnitContainer from './containers/CooperativeUnitContainer.jsx';
+import AdvertisingInvestmentContainer from './containers/AdvertisingInvestmentContainer.jsx';
 
 export default class App extends React.Component {
     constructor(props) {
@@ -14,12 +16,13 @@ export default class App extends React.Component {
 
     render () {
         return (
-            <div>
+            <div className="main">
                 <Header />
-                <ToolBar />
-                <Container>
-                    <Content />
-                </Container>
+                <Banner />
+                <SearchBarContainer />
+                <HotColumnContainer />
+                <AdvertisingInvestmentContainer />
+                <CooperativeUnitContainer />
                 <Footer />
             </div>
         );

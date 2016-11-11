@@ -1,0 +1,7 @@
+'use strict';
+
+export const LIST_HOT_COLUMNS = 'LIST_HOT_COLUMNS';
+export const LIST_COLUMNS = 'LIST_COLUMNS';
+export const RELOADED = 'RELOADED';
+export const LIST_COLUMN_SEARCH_TAGS = 'LIST_COLUMN_SEARCH_TAGS';
+export const TOGGLE_COLUMN_SEARCH_TAG = 'TOGGLE_COLUMN_SEARCH_TAG';

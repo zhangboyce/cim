@@ -1,4 +1,5 @@
 'use strict';
+
 const path = require('path');
 const koa = require('koa');
 const logger = require('koa-logger');
@@ -24,7 +25,7 @@ app.use(require('koa-static-server')({rootDir: 'public', rootPath: '/public'}));
 
 //mongoose
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/activity');
+mongoose.connect('mongodb://localhost:27017/cim');
 
 const port = 8888;
 app.listen(port);
