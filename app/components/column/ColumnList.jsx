@@ -1,6 +1,9 @@
 'use strict';
 
 import React, {Component, PropTypes} from 'react';
+import Column from './Column.jsx';
+
+import _ from 'lodash';
 
 export default class ColumnList extends Component {
 
@@ -9,7 +12,13 @@ export default class ColumnList extends Component {
 
         return (
             <div className="column-list">
-                XXOO
+                {
+                    _.map(columns, column => {
+                        return (
+                            <Column column={ column } />
+                        )
+                    })
+                }
             </div>
         );
     }

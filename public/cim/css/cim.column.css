@@ -83,3 +83,149 @@
     font-size: 12px;
     font-weight: normal;
 }
+
+.column-list-header {
+    text-align: center;
+    width: 100%;
+    padding: 5px;
+    margin: 5px;
+    font-size: 14px;
+}
+
+.column-list-header .col-select {
+    display: inline-block;
+    float: none;
+    margin-right: 30px;
+}
+
+.column-list-header .col-select span {
+    display: inline-block;
+    margin-right: 6px;
+    color: rgb(156, 156, 156);
+}
+
+.column-list-header .col-select select.form-control {
+    font-size: 14px;
+    padding-right: 15px;
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    border: transparent;
+    background: url(/public/imgs/common/select.jpg) no-repeat scroll right center transparent;
+    background-size: 11px 11px;
+}
+
+.column-list-header .col-select select.form-control::-ms-expand {
+    display: none;
+}
+
+.column-list-container {
+    text-align: center;
+}
+
+.column-list {
+    width: 80%;
+    text-align: center;
+    display: inline-block;
+}
+
+
+.column-list .column {
+    display: inline-block;
+    width: 31%;
+    margin: 10px 1%;
+    border-radius: 8px;
+}
+
+.column .column-img {
+    width: 100%;
+    height: 170px;
+}
+
+.column-img img {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+}
+
+.column .column-detail {
+    margin-left: 10px;
+}
+
+.column .column-detail > div {
+    margin-top: 10px;
+}
+
+.column-name-status > div {
+    display: inline-block;
+    width: 50%;
+}
+
+.column-name {
+    font-size: 16px;
+    text-align: left;
+    letter-spacing: 2px;
+}
+
+.column-status {
+    text-align: right;
+}
+
+.column-status i {
+    margin-right: 16px;
+}
+
+.column-status .status-i {
+    display: inline-block;
+    position: relative;
+}
+
+.column-status .status-i > span {
+    display: inline-block;
+    position: absolute;
+    background-color: rgb(160, 25, 25);
+    color: rgb(255, 255, 255);
+    text-align: center;
+    font-size: 12px;
+    width: 16px;
+    height: 16px;
+    border-radius: 8px;
+    top: -5px;
+    left: 10px;
+}
+
+.column .column-tag {
+    font-size: 12px;
+    text-align: left;
+}
+
+.column-tag span {
+    border: 1px solid rgb(156, 156, 156);
+    margin-right: 10px;
+    border-radius: 10px;
+    padding: 1px 6px;
+    color: rgb(156, 156, 156);
+}
+
+.column-tag span.completed {
+    border: none;
+    background-color: rgb(131, 17, 21);
+    color: rgb(255, 255, 255);
+}
+
+.column .column-desc {
+    font-size: 13px;
+    color: rgb(130, 130, 130);
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.column .column-desc p {
+    margin-bottom: 6px;
+}
+
+.column .column-desc p a,
+.column .column-desc p a:focus,
+.column .column-desc p a:hover {
+    color: rgb(168, 107, 109);
+}

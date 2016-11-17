@@ -9,13 +9,13 @@ export default class ColumnListHeader extends Component {
         const { filters } = this.props;
 
         return (
-            <div className="column-list-header col-sm-12">
-                <div className="row">
-                    {
-                        _.map(filters, filter => {
-                            return (
-                                <div className="col-sm-1 col-select">
-                                    <span>{ filter.name }</span>
+            <div className="column-list-header">
+                {
+                    _.map(filters, filter => {
+                        return (
+                            <div className="col-select">
+                                <span>{ filter.name }:</span>
+                                <span>
                                     <select className="form-control" onChange="">
                                         {
                                             _.map(filter.values, v => {
@@ -23,11 +23,11 @@ export default class ColumnListHeader extends Component {
                                             })
                                         }
                                     </select>
-                                </div>
-                            );
-                        })
-                    }
-                </div>
+                                </span>
+                            </div>
+                        );
+                    })
+                }
             </div>
         );
     }
