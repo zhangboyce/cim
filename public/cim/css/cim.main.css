@@ -10,6 +10,11 @@ body {
     letter-spacing: 2px;
 }
 
+div {
+    margin: 0;
+    padding: 0;
+}
+
 a:focus,
 a:hover {
     text-decoration: none;
@@ -46,10 +51,14 @@ a:hover {
     margin: 0 10px;
     border-radius: 7px;
     border: 3px solid rgb(131, 17, 21);
-    opacity: 0.5;
+    filter:alpha(opacity=50);
+    -moz-opacity:0.5;
+    opacity:0.5;
 }
 .unslider .unslider-nav ol li.unslider-active {
-    opacity: 1;
+    filter:alpha(opacity=100);
+    -moz-opacity:1;
+    opacity:1;
 }
 
 .unslider .unslider-arrow {
@@ -59,11 +68,15 @@ a:hover {
 
 .unslider .unslider-arrow i {
     color: rgb(131, 17, 21);
-    opacity: 0.5;
+    filter:alpha(opacity=50);
+    -moz-opacity:0.5;
+    opacity:0.5;
 }
 
 .unslider .unslider-arrow i:hover {
-    opacity: 1;
+    filter:alpha(opacity=100);
+    -moz-opacity:1;
+    opacity:1;
 }
 
 .container-title {

@@ -8,14 +8,14 @@ import _ from 'lodash';
 export default class ColumnList extends Component {
 
     render() {
-        const { columns } = this.props;
+        const { columns, type } = this.props;
 
         return (
             <div className="column-list">
                 {
                     _.map(columns, column => {
                         return (
-                            <Column column={ column } />
+                            <Column column={ column } type={ type } key={ column.id }/>
                         )
                     })
                 }
@@ -25,5 +25,6 @@ export default class ColumnList extends Component {
 };
 
 ColumnList.propTypes = {
-    columns: PropTypes.array.isRequired
+    columns: PropTypes.array.isRequired,
+    type: PropTypes.string.isRequired
 };

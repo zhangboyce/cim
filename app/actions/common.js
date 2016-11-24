@@ -6,3 +6,10 @@ export function reloaded(data) {
         data: data
     }
 }
+
+export function global() {
+    return {
+        type: types.GLOBAL,
+        data: {  }
+    }
+}

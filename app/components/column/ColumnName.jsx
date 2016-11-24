@@ -7,16 +7,16 @@ import _ from 'lodash';
 export default class ColumnName extends Component {
 
     render() {
-        const { column } = this.props;
+        const { name } = this.props;
         return (
             <div className="column-name-status">
-                <div className="column-name">{ column.name }</div>
-                <ColumnStatus column={ column }/>
+                <div className="column-name">{ name }</div>
+                { this.props.children }
             </div>
         );
     }
 };
 
 ColumnName.propTypes = {
-    column: PropTypes.object.isRequired
+    name: PropTypes.string
 };

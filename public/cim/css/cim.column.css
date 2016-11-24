@@ -161,6 +161,23 @@
     width: 50%;
 }
 
+.column-op button {
+    background-color: rgb(160, 25, 25);
+    color: rgb(255, 255, 255);
+    border: transparent;
+    border-radius: 8px;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.column-op span em {
+    font-size: 12px;
+}
+.column-op span {
+    color: rgb(252, 0, 0);
+    margin-right: 10px;
+}
+
 .column-name {
     font-size: 16px;
     text-align: left;
@@ -228,4 +245,116 @@
 .column .column-desc p a:focus,
 .column .column-desc p a:hover {
     color: rgb(168, 107, 109);
+}
+
+.column-detail-container {
+    background-color: rgb(246, 247, 249);
+}
+
+.column-detail-container .column-detail-content {
+    margin: 0 10%;
+    padding: 2% 10%;
+    position: relative;
+    background-color: rgb(255, 255, 255);
+    border-left: rgb(224, 224, 224) solid 1px;
+    border-right: rgb(224, 224, 224) solid 1px;
+}
+
+.column-detail-container .column-back {
+    position: absolute;
+    left: 10px;
+    top: 20px;
+}
+
+.column-detail-container a {
+    color: rgb(124, 124, 124);
+    font-size: 12px;
+}
+
+.column-detail-container a:hover {
+    color: rgb(0, 0, 0);
+}
+
+.column-detail-container .column-img {
+    margin-top: 10%;
+}
+
+.column-detail-container .column-img img {
+    border-radius: 0;
+}
+
+.column-detail-container .column-name-status {
+    margin: 20px 0;
+}
+
+.column-detail-container .column-desc {
+    font-size: 14px;
+}
+
+.column-detail-container .column-name-status .column-name {
+    width: 20%;
+}
+
+.column-detail-container .column-name-status .column-tag {
+    width: 40%;
+    font-size: 12px;
+}
+
+.column-detail-container .column-name-status .column-status {
+    width: 20%;
+}
+
+.column-detail-container .column-op {
+    margin-top: 50px;
+    text-align: right;
+}
+
+.column-detail-container .column-op button {
+    background-color: rgb(122, 16, 17);
+    color: rgb(255, 255, 255);
+    border: transparent;
+    border-radius: 8px;
+    font-size: 12px;
+    letter-spacing: 4px;
+    width: 100px;
+    height: 30px;
+    margin-left: 10px;
+}
+
+.column-detail-container .column-op div {
+    float: right;
+}
+
+.column-detail-container .column-detail-content > p {
+    margin-top: 40px;
+    font-size: 12px;
+    color: rgb(204, 204, 204);
+}
+
+.column-detail-container .column-prev,
+.column-detail-container .column-next {
+    position: absolute;
+    top: 50%;
+}
+
+.column-detail-container .column-prev i,
+.column-detail-container .column-next i {
+    filter:alpha(opacity=20);
+    -moz-opacity:0.2;
+    opacity:0.2;
+}
+
+.column-detail-container .column-prev a:hover i,
+.column-detail-container .column-next a:hover i {
+    filter:alpha(opacity=100);
+    -moz-opacity:1;
+    opacity:1;
+}
+
+.column-detail-container .column-prev {
+    left: 20px;
+}
+
+.column-detail-container .column-next {
+    right: 20px;
 }

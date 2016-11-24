@@ -5,10 +5,22 @@ import * as types from '../constants/ActionTypes';
 import _ from 'lodash';
 
 export default combineReducers({
+    global,
     hotColumns,
     columns,
+    column,
     columnFilters
 });
+
+function global(state = {}, action) {
+    switch (action.type){
+        case types.GLOBAL: {
+            return action.data;
+        }
+        default:
+            return state;
+    }
+}
 
 function hotColumns(state = {}, action) {
     return combineReducers({
@@ -59,6 +71,16 @@ function columns(state = {}, action) {
             default:
                 return state;
         }
+    }
+}
+
+function column(state = {}, action) {
+    switch (action.type){
+        case types.VIEW_COLUMN: {
+            return action.data;
+        }
+        default:
+            return state;
     }
 }
 

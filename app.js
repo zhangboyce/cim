@@ -7,21 +7,43 @@ const mongoose = require('mongoose');
 const render = require('koa-swig');
 const serve = require('koa-static');
 
-const activityRouter = require('./server_routers/activity.router.js');
-
 const app = koa();
+
+app.use(function *(next) {
+    try {
+        yield next;
+    }catch(e) {
+        if(e.name == 'NotFoundError') {
+            this.status = 404;
+            yield this.render('404');
+        }else {
+            console.log(e.stack);
+            this.body = '服务器故障,请联络管理员';
+        }
+    }
+});
+
+// context render
 app.context.render = render({
     root: path.join(__dirname, 'views'),
     autoescape: true,
-    //cache: 'memory', // disable, set to false
     ext: 'html'
 });
 
-// routers
+// server routers
+const activityRouter = require('./server_routers/activity.router.js');
 app.use(activityRouter.routes()).use(activityRouter.allowedMethods());
 app.use(logger());
 
 app.use(require('koa-static-server')({rootDir: 'public', rootPath: '/public'}));
+
+//koa router
+const koaRouter = require('koa-router')();
+koaRouter.get('/*', function *() {
+    console.log('------------');
+    yield this.render('index');
+});
+app.use(koaRouter.routes()).use(koaRouter.allowedMethods());
 
 //mongoose
 mongoose.Promise = global.Promise;

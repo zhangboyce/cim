@@ -17,14 +17,7 @@ export default class Banner extends Component {
     }
 
     render() {
-        let banners = [
-            'banner1.jpg',
-            'banner2.jpg',
-            'banner3.jpg',
-            'banner4.jpg',
-            'banner5.jpg',
-            'banner6.jpg' ];
-
+        let banners = [ '商务合作.png', '广告招商.png', '我的关注.png', '版权购买.png' ];
         return (
             <div className="banner">
                 <ul>

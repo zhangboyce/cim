@@ -5,6 +5,10 @@ import _ from 'lodash';
 
 export default class ColumnListHeader extends Component {
 
+    handleChange() {
+
+    }
+
     render() {
         const { filters } = this.props;
 
@@ -13,10 +17,10 @@ export default class ColumnListHeader extends Component {
                 {
                     _.map(filters, filter => {
                         return (
-                            <div className="col-select">
+                            <div key={ filter.name } className="col-select">
                                 <span>{ filter.name }:</span>
                                 <span>
-                                    <select className="form-control" onChange="">
+                                    <select className="form-control" onChange={ this.handleChange.bind(this) }>
                                         {
                                             _.map(filter.values, v => {
                                                 return <option key={ v } value={ v }>{ v }</option> ;

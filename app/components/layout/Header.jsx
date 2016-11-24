@@ -1,27 +1,48 @@
 'use strict';
 
 import React, {Component, PropTypes} from 'react';
+import { Link } from 'react-router';
+import classnames from 'classnames';
+import _ from 'lodash';
 
 export default class Header extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { menus: [
+            { name: "广告招商", path: "/column/ai", active: false },
+            { name: "创意策划", path: "/column/cp", active: false },
+            { name: "版权购买", path: "/column/cb", active: false } ]};
+
+        this.handleClickMenu = this.handleClickMenu.bind(this);
+    }
+
+    handleClickMenu(name) {
+        return () => {
+            let menus = [...this.state.menus];
+            _.forEach(menus, menu => { menu.active = false});
+            let index = menus.findIndex(menu => menu.name == name);
+            menus[index].active = true;
+            this.setState({ menus: menus });
+        };
+    }
+
     render() {
+        const { global } = this.props;
+        let menus = this.state.menus.map(menu => {
+            return (
+                <li key={ menu.name } className={ classnames({ "nav-item": true, active: menu.active })} onClick={ this.handleClickMenu(menu.name) } >
+                    <Link className="nav-link" to={ menu.path }>{ menu.name }</Link>
+                </li>
+            );
+        });
+
         return (
             <nav className="navbar navbar-fixed-top navbar-dark header main-background">
-                <a className="navbar-brand" href="#">
+                <Link className="navbar-brand" href="/">
                     <img src="/public/imgs/logo.jpg"/>
-                </a>
+                </Link>
                 <ul className="nav navbar-nav">
-                    <li className="nav-item active">
-                        <a className="nav-link" href="#">创意策划</a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="#">版权购买</a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="#">广告招商</a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="#">商务合作</a>
-                    </li>
+                    { menus }
                 </ul>
                 <div className="pull-right user-info">
                     <div className="avatar">
@@ -43,4 +64,9 @@ export default class Header extends Component {
 
         );
     }
+}
+
+Header.propTypes = {
+    global: PropTypes.object.isRequired
 };
+

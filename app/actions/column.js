@@ -196,3 +196,19 @@ export function listColumns() {
         dispatch(reloaded(true));
     };
 }
+
+export function viewColumn(id) {
+    let index = columns.findIndex(column => column.id == id);
+    console.log('==========' + index);
+    let column = columns[index];
+    if (index > 0) {
+        column.prev = columns[index - 1].id;
+    }
+    if (index < columns.length - 1) {
+        column.next = columns[index + 1].id;
+    }
+    return {
+        type: types.VIEW_COLUMN,
+        data: column
+    }
+}
