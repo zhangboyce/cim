@@ -1,22 +1,37 @@
 'use strict';
 
 import React, {Component, PropTypes} from 'react';
-import AvatarEditor from 'react-avatar-editor';
+import ReactDom from "react-dom";
 
-export default class AvatarUploadAndEditor extends Component {
+export default class FileUploader extends Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    handleFile(e) {
+        let reader = new FileReader();
+        let file = e.target.files[0];
+
+        if (!file) return;
+
+        reader.onload = img => {
+            ReactDom.findDOMNode(this.refs.in).value = '';
+            this.props.onFileChange(img.target.result);
+        };
+        reader.readAsDataURL(file);
+    }
 
     render() {
         return (
-            <div>
-                <AvatarEditor
-                    image="/public/imgs/logo.png"
-                    ref="editor"
-                    width={250}
-                    height={250}
-                    border={50}
-                    color={[255, 255, 255, 0.6]} // RGBA
-                    scale={1.2} />
-            </div>
+            <span className="btn">
+                { this.props.text }<input ref="in" type="file" accept="image/*" onChange={ this.handleFile.bind(this) } />
+            </span>
         );
     }
+};
+
+FileUploader.propTypes =  {
+    onFileChange: PropTypes.func.isRequired,
+    text: PropTypes.string
 };

@@ -3,62 +3,74 @@ import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter, browserHistory, Link } from 'react-router';
-import * as ColumnActions from '../actions/column';
-import ColumnImg from './../components/column/ColumnImg.jsx';
-import ColumnName from './../components/column/ColumnName.jsx';
-import ColumnStatus from './../components/column/ColumnStatus.jsx';
-import ColumnTag from './../components/column/ColumnTag.jsx';
-import ColumnDetail from './../components/column/ColumnDetail.jsx';
+import * as UseActions from '../actions/user';
 
-class ColumnDetailContainer extends Component {
+import InputPanel from '../components/user/InputPanel.jsx';
+import AvatarUploader from '../components/user/AvatarUploader.jsx';
 
-    componentWillMount() {
-        this.props.actions.viewColumn(this.props.params.id);
+class RegisterContainer extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {};
     }
 
-    componentWillReceiveProps(newProps) {
-        let params = this.props.params, newParams = newProps.params;
-        if (params.id != newParams.id) {
-            this.props.actions.viewColumn(newProps.params.id);
-        }
+    handleChange(name, value) {
+        let obj = {};
+        obj[name] = value;
+        this.setState(obj);
+    }
+
+    handleSubmit() {
+        console.log('state: ' + JSON.stringify(this.state))
+    }
+
+    handleSaveAvatar(avatarUrl) {
+        this.setState({ avatarUrl: avatarUrl });
     }
 
     render() {
-        const { column, params } = this.props;
-
-        console.log(JSON.stringify(params )+ '------=p=-');
+        const validations = {
+            columnName: {
+                "频道名称不能为空!": val => val && val.trim(),
+                "频道名称包含非法字符!": val => { return /^[\w\u4e00-\u9fa5]+$/.test(val) }
+            },
+            name: {
+                "姓名不能为空!": val => val && val.trim(),
+                "姓名包含非法字符!": val => { return /^[\w\u4e00-\u9fa5]+$/.test(val) }
+            },
+            email: {
+                "邮箱账号不能为空!": val => val && val.trim(),
+                "邮箱账号格式不正确!": val => { return /^([\w]+(?:\.[\w]+)*)@((?:[a-z0-9]+(?:-[a-zA-Z0-9]+)*)+\.[a-z]{2,6})$/i.test(val) }
+            },
+            password: {
+                "密码不能为空!": val => val && val.trim(),
+                "密码格式不正确!": val => { return /^(?=.*\d)(?=.*[a-zA-Z]).{7,}$/.test(val) }
+            },
+            rePassword: {
+                "重复密码不能为空!": val => val && val.trim(),
+                "重复密码不正确!": val => { return val === this.state.password }
+            },
+            mobile: {
+                "手机号码不能为空!": val => val && val.trim(),
+                "手机号码格式不正确!": val => { return /^1[3|4|5|7|8][0-9]\d{8}$/.test(val) }
+            }
+        };
 
         return (
-            <div className="column-detail-container">
-                <div className="column-detail-content">
-                    <div className="column-back">
-                        <Link to={`/column/${ params.type }`}>
-                            <i className="fa fa-chevron-left"/>&nbsp;栏目详情
-                        </Link>
-                    </div>
-                    <ColumnImg column={ column }/>
-                    <ColumnName name={ column.name } >
-                        <ColumnTag column={ column } />
-                        <ColumnStatus column={ column }/>
-                    </ColumnName>
-                    <ColumnDetail column={ column } showInDetail={ true } />
-                    <p>想获取更多栏目详情，请通过以下合作方式和我们取得联系，谢谢。</p>
-                    <div className="column-op">
-                        <button type="button">我要赞助</button>
-                        <button type="button">我要认播</button>
-                        <button type="button">我要制作</button>
-                    </div>
-                    { column.prev &&
-                        <div className="column-prev">
-                            <Link to={`/column/${params.type}/${column.prev}`}><i className="fa fa-chevron-left fa-4x"/></Link>
-                        </div>
-                    }
-                    {
-                        column.next &&
-                        <div className="column-next">
-                            <Link to={`/column/${params.type}/${column.next}`}><i className="fa fa-chevron-right fa-4x"/></Link>
-                        </div>
-                    }
+            <div className="user-register-container">
+                <img src="/public/imgs/background.png" />
+                <div className="register-content">
+                    <InputPanel name="columnName" validation={ validations.columnName} onChange={ this.handleChange.bind(this) } placeholder="频道名称"/>
+                    <InputPanel name="name" validation={ validations.name } onChange={ this.handleChange.bind(this) } placeholder="姓名"/>
+                    <InputPanel name="email" validation={ validations.email } onChange={ this.handleChange.bind(this) } placeholder="邮箱账号(企业邮箱)"/>
+                    <InputPanel name="password" validation={ validations.password } onChange={ this.handleChange.bind(this) } placeholder="输入密码(字母+数字6位以上)"/>
+                    <InputPanel name="rePassword" validation={ validations.rePassword }  onChange={ this.handleChange.bind(this) } placeholder="再次输入密码"/>
+                    <InputPanel name="mobile" validation={ validations.mobile } onChange={ this.handleChange.bind(this) } placeholder="手机号码"/>
+
+                    <AvatarUploader onSaveAvatar={ this.handleSaveAvatar.bind(this) }/>
+
+                    <button type="button" className="btn" onClick={ this.handleSubmit.bind(this) }>注&nbsp;&nbsp;册</button>
                 </div>
             </div>
         );
@@ -68,18 +80,18 @@ class ColumnDetailContainer extends Component {
 
 const mapStateToProps = state => {
     return {
-        column: state.column
+
     }
 };
 
 const mapDispatchToProps = dispath => {
     return {
-        actions: bindActionCreators(Object.assign({}, ColumnActions), dispath)
+        actions: bindActionCreators(Object.assign({}, UseActions), dispath)
     }
 };
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(withRouter(ColumnDetailContainer));
+)(withRouter(RegisterContainer));
 

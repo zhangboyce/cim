@@ -39,12 +39,13 @@ export default class Header extends Component {
         return (
             <nav className="navbar navbar-fixed-top navbar-dark header main-background">
                 <Link className="navbar-brand" href="/">
-                    <img src="/public/imgs/logo.jpg"/>
+                    <img src="/public/imgs/logo.png"/>
                 </Link>
                 <ul className="nav navbar-nav">
                     { menus }
                 </ul>
                 <div className="pull-right user-info">
+                    <Link to="/register">注册</Link>
                     <div className="avatar">
                         <img src="/public/imgs/users/avatar1.jpg" />
                     </div>

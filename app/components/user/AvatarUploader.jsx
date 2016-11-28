@@ -1,21 +1,44 @@
 'use strict';
 
 import React, {Component, PropTypes} from 'react';
+import FileUploader from '../common/FileUploader.jsx';
+import AvatarCropperModal from './AvatarCropperModal.jsx';
 
-export default class FileUploader extends Component {
+export default class AvatarUploader extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = { img: null, croppedImg: null }
+    }
+
+    handleFileChange(dataURI) {
+        this.setState({ img: dataURI });
+    }
+
+    handleSave(dataUrl) {
+        this.setState({ img: null, croppedImg: dataUrl });
+        this.props.onSaveAvatar(dataUrl);
+    }
 
     render() {
         return (
-            <div>
-                <AvatarEditor
-                    image="/public/imgs/logo.png"
-                    ref="editor"
-                    width={250}
-                    height={250}
-                    border={50}
-                    color={[255, 255, 255, 0.6]} // RGBA
-                    scale={1.2} />
+            <div className="upload-panel">
+                <div className="upload-camera">
+                    <FileUploader onFileChange={ this.handleFileChange.bind(this) } />
+                    { this.state.croppedImg ? <img src={ this.state.croppedImg }/> : <i className="fa fa-camera fa-2x"/> }
+                </div>
+                <div className="upload-explain">
+                    <p>上传头像(企业logo)</p>
+                    <p>文件小于512k</p>
+                </div>
+                <FileUploader onFileChange={ this.handleFileChange.bind(this) } text="点击上传"/>
+
+                <AvatarCropperModal img={ this.state.img } onSave={ this.handleSave.bind(this) } />
             </div>
         );
     }
+};
+
+AvatarUploader.propTypes =  {
+    onSaveAvatar: PropTypes.func.isRequired
 };

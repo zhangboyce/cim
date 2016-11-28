@@ -2,54 +2,62 @@
 
 import React, {Component, PropTypes} from 'react';
 import Cropper from 'react-cropper';
-import FileUploader from '../common/FileUploader.jsx';
+import Modal from '../common/Modal.jsx';
 
-export default class AvatarUploader extends Component {
-
+export default class AvatarCropperModal extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            cropperOpen: false,
-            img: null,
-            croppedImg: null
+        this.state = { previewImg: null }
+    }
+
+    componentDidMount() {
+        this.previewImg();
+    }
+
+    handleSave() {
+        let dataUrl = this.refs.cropper.getCroppedCanvas().toDataURL();
+        if (typeof dataUrl === 'undefined') {
+            return;
         }
+        this.props.onSave( dataUrl );
     }
 
-
-    handleFileChange(dataURI) {
-        this.setState({
-            img: dataURI,
-            cropperOpen: true
-        });
+    handleCrop() {
+        this.previewImg();
     }
 
-    _crop(){
-        // image in dataUrl
-        console.log(this.refs.cropper.getCroppedCanvas().toDataURL());
-    }
+    previewImg = () => {
+        let dataUrl = this.refs.cropper.getCroppedCanvas().toDataURL();
+        $('.img-preview img').attr('src', dataUrl);
+    };
 
     render() {
         return (
-            <div className="upload-panel">
-                <div className="upload-camera">
-                    <FileUploader onFileChange={ this.handleFileChange.bind(this) } />
-                    { this.state.croppedImg ? <img src={ this.state.croppedImg }/> : <i className="fa fa-camera fa-2x"/> }
-                </div>
-                <div className="upload-explain">
-                    <p>上传头像(企业logo)</p>
-                    <p>文件小于512k</p>
-                </div>
-                <FileUploader onFileChange={ this.handleFileChange.bind(this) } text="点击上传"/>
-                { this.state.cropperOpen &&
-                <Cropper
-                    ref='cropper'
-                    src={ this.state.img }
-                    style={{height: 400, width: '100%'}}
-                    aspectRatio={16 / 9}
-                    guides={false}
-                    crop={this._crop.bind(this)} />
-                }
-            </div>
+            <Modal show={ this.props.img != null } id="avatar-cropper-modal">
+                <Modal.Header>
+                    <h3>Crop it.</h3>
+                </Modal.Header>
+                <Modal.Body>
+                    <Cropper
+                        ref='cropper'
+                        src={ this.props.img }
+                        style={ { height: 200, width: 200, marginLeft: 30 } }
+                        aspectRatio={ 16 / 16 }
+                        crop={ this.handleCrop.bind(this) }
+                        guides={ true } />
+                    <div className="img-preview" style={{ width: 200, height: 200 }}>
+                        <img/>
+                    </div>
+                </Modal.Body>
+                <Modal.Footer>
+                    <button type="button" value="保存" className="btn btn-success" onClick={ this.handleSave.bind(this) }>保存</button>
+                </Modal.Footer>
+            </Modal>
         );
     }
+};
+
+AvatarCropperModal.propTypes =  {
+    onSave: PropTypes.func.isRequired,
+    img: PropTypes.string
 };

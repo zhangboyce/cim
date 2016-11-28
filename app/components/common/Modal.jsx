@@ -1,11 +1,7 @@
 'use strict';
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 
-class Modal extends React.Component {
-
-    static propTypes = {
-        id: React.PropTypes.string.required,
-    };
+export default class Modal extends Component {
 
     showModal = () => {
         $("#" + this.props.id).modal('show');
@@ -44,12 +40,12 @@ class Modal extends React.Component {
     }
 }
 
-Modal.Header = class ModalHeader extends React.Component {
+Modal.Header = class extends React.Component {
     render() {
         return (
             <div className="modal-header">
                 <button type="button" className="close" data-dismiss="modal" aria-label="Close"
-                        onClick={this.props.closeModal}>
+                        onClick={ this.props.closeModal }>
                     <span aria-hidden="true">&times;</span>
                 </button>
                 {this.props.children}
@@ -58,7 +54,7 @@ Modal.Header = class ModalHeader extends React.Component {
     }
 };
 
-Modal.Body = class ModalBody extends React.Component {
+Modal.Body = class extends React.Component {
     render() {
         return (
             <div className="modal-body">
@@ -68,7 +64,7 @@ Modal.Body = class ModalBody extends React.Component {
     }
 };
 
-Modal.Footer = class ModalFooter extends React.Component {
+Modal.Footer = class extends React.Component {
     render() {
         return (
             <div className="modal-footer">
@@ -78,5 +74,6 @@ Modal.Footer = class ModalFooter extends React.Component {
     }
 };
 
-
-export default Modal;
+Modal.propTypes =  {
+    id: PropTypes.string.isRequired
+};

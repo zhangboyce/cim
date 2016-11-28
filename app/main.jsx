@@ -12,6 +12,7 @@ import HotColumnContainer from './containers/HotColumnContainer.jsx';
 import CooperativeUnitContainer from './containers/CooperativeUnitContainer.jsx';
 import ColumnListContainer from './containers/ColumnListContainer.jsx';
 import ColumnDetailContainer from './containers/ColumnDetailContainer.jsx';
+import RegisterContainer from './containers/RegisterContainer.jsx';
 
 import configureStore from './store/configureStore'
 
@@ -35,6 +36,7 @@ ReactDOM.render(
                 <IndexRoute component={ Index } />
                 <Route path="column/:type" component={ ColumnListContainer } />
                 <Route path="column/:type/:id" component={ ColumnDetailContainer } />
+                <Route path="register" component={ RegisterContainer } />
             </Route>
         </Router>
     </Provider>, document.getElementById('app'));

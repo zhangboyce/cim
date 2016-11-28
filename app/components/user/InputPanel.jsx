@@ -1,29 +1,57 @@
 'use strict';
 import React, {Component, PropTypes} from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { withRouter, browserHistory, Link } from 'react-router';
-import * as UseActions from '../actions/user';
 
-const InputPanel = class extends Component {
+export default class InputPanel extends Component {
     constructor(props) {
         super(props);
-        this.state = { value: "", message: "" }
+        this.state = { value: "", message: "" };
+        this.validate = this.validate.bind(this);
     }
 
     handleChange(e) {
         let value = e.target.value;
-        if (value && value.trim()) {
-            this.setState({ value: value });
-        } else {
-            this.setState({ message: this.props.message });
+        this.validate(value);
+
+        this.setState({ value: value&&value.trim() ? value: "" });
+        this.props.onChange(this.props.name, value);
+    }
+
+    handleBlur(e) {
+        let value = e.target.value;
+        this.validate(value);
+    }
+
+    validate(value) {
+        let validation = this.props.validation;
+        if (validation) {
+            let ok = true;
+            for (let prop in validation) {
+                if (validation.hasOwnProperty( prop )) {
+                    let vf = validation[prop];
+                    if (vf instanceof Function && !vf(value)) {
+                        this.setState({ message: prop });
+                        ok = false;
+                        break;
+                    }
+                }
+            }
+
+            if (ok) {
+                this.setState({ message: "" });
+            }
         }
+
     }
 
     render() {
         return (
             <div className="input-panel">
-                <input className="form-control" value={ this.state.value } onChange={ this.handleChange.bind(this) } type="text" placeholder={ this.props.placeholder }/>
+                <input className="form-control"
+                       value={ this.state.value }
+                       onChange={ this.handleChange.bind(this) }
+                       onBlur={ this.handleBlur.bind(this) }
+                       type="text"
+                       placeholder={ this.props.placeholder }/>
                 {
                     this.state.message && <span>{ this.state.message }</span>
                 }
@@ -32,36 +60,9 @@ const InputPanel = class extends Component {
     }
 };
 
-class RegisterContainer extends Component {
-
-    render() {
-        return (
-            <div className="user-register-container">
-                <img src="/public/imgs/background.png" />
-                <div className="register-background" />
-                <div className="register-content">
-                    <InputPanel />
-                </div>
-            </div>
-        );
-    }
-
-}
-
-const mapStateToProps = state => {
-    return {
-
-    }
+InputPanel.propTypes =  {
+    onChange: PropTypes.func.isRequired,
+    name: PropTypes.string.isRequired,
+    validation: PropTypes.object,
+    placeholder: PropTypes.string
 };
-
-const mapDispatchToProps = dispath => {
-    return {
-        actions: bindActionCreators(Object.assign({}, UseActions), dispath)
-    }
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(withRouter(RegisterContainer));
-
