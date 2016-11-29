@@ -8,16 +8,20 @@ export default class AvatarUploader extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { img: null, croppedImg: null }
+        this.state = { img: null, croppedImg: null, cropperOpen: false }
     }
 
     handleFileChange(dataURI) {
-        this.setState({ img: dataURI });
+        this.setState({ img: dataURI, cropperOpen: true });
     }
 
     handleSave(dataUrl) {
-        this.setState({ img: null, croppedImg: dataUrl });
+        this.setState({ img: null, croppedImg: dataUrl, cropperOpen: false });
         this.props.onSaveAvatar(dataUrl);
+    }
+
+    handleClose() {
+        this.setState({ cropperOpen: false });
     }
 
     render() {
@@ -33,7 +37,10 @@ export default class AvatarUploader extends Component {
                 </div>
                 <FileUploader onFileChange={ this.handleFileChange.bind(this) } text="点击上传"/>
 
-                <AvatarCropperModal img={ this.state.img } onSave={ this.handleSave.bind(this) } />
+                <AvatarCropperModal img={ this.state.img }
+                                    onClose={ this.handleClose.bind(this) }
+                                    show={ this.state.cropperOpen }
+                                    onSave={ this.handleSave.bind(this) } />
             </div>
         );
     }

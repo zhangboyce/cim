@@ -5,14 +5,6 @@ import Cropper from 'react-cropper';
 import Modal from '../common/Modal.jsx';
 
 export default class AvatarCropperModal extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { previewImg: null }
-    }
-
-    componentDidMount() {
-        this.previewImg();
-    }
 
     handleSave() {
         let dataUrl = this.refs.cropper.getCroppedCanvas().toDataURL();
@@ -22,19 +14,10 @@ export default class AvatarCropperModal extends Component {
         this.props.onSave( dataUrl );
     }
 
-    handleCrop() {
-        this.previewImg();
-    }
-
-    previewImg = () => {
-        let dataUrl = this.refs.cropper.getCroppedCanvas().toDataURL();
-        $('.img-preview img').attr('src', dataUrl);
-    };
-
     render() {
         return (
-            <Modal show={ this.props.img != null } id="avatar-cropper-modal">
-                <Modal.Header>
+            <Modal show={ this.props.show } id="avatar-cropper-modal">
+                <Modal.Header onClose={ this.props.onClose }>
                     <h3>Crop it.</h3>
                 </Modal.Header>
                 <Modal.Body>
@@ -43,10 +26,9 @@ export default class AvatarCropperModal extends Component {
                         src={ this.props.img }
                         style={ { height: 200, width: 200, marginLeft: 30 } }
                         aspectRatio={ 16 / 16 }
-                        crop={ this.handleCrop.bind(this) }
+                        preview=".img-preview"
                         guides={ true } />
                     <div className="img-preview" style={{ width: 200, height: 200 }}>
-                        <img/>
                     </div>
                 </Modal.Body>
                 <Modal.Footer>
@@ -59,5 +41,7 @@ export default class AvatarCropperModal extends Component {
 
 AvatarCropperModal.propTypes =  {
     onSave: PropTypes.func.isRequired,
+    onClose: PropTypes.func.isRequired,
+    show: PropTypes.bool.isRequired,
     img: PropTypes.string
 };

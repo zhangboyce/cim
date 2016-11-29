@@ -3,33 +3,9 @@ import React, { Component, PropTypes } from 'react';
 
 export default class Modal extends Component {
 
-    showModal = () => {
-        $("#" + this.props.id).modal('show');
-    };
-
-    hideModal = () => {
-        $("#" + this.props.id).modal('hide')
-    };
-
-    componentDidMount() {
-        if (this.props.show === true) {
-            this.showModal();
-        } else {
-            this.hideModal();
-        }
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.show === true) {
-            this.showModal();
-        } else {
-            this.hideModal();
-        }
-    }
-
     render() {
         return (
-            <div className="modal fade" id={this.props.id}>
+            <div className="modal" style={{ display:this.props.show ? 'block': 'none' }}>
                 <div className="modal-dialog">
                     <div className="modal-content">
                         {this.props.children}
@@ -41,11 +17,12 @@ export default class Modal extends Component {
 }
 
 Modal.Header = class extends React.Component {
+
     render() {
         return (
             <div className="modal-header">
                 <button type="button" className="close" data-dismiss="modal" aria-label="Close"
-                        onClick={ this.props.closeModal }>
+                        onClick={ this.props.onClose }>
                     <span aria-hidden="true">&times;</span>
                 </button>
                 {this.props.children}
@@ -75,5 +52,10 @@ Modal.Footer = class extends React.Component {
 };
 
 Modal.propTypes =  {
+    show: PropTypes.bool.isRequired,
     id: PropTypes.string.isRequired
+};
+
+Modal.Header.propTypes = {
+    onClose: PropTypes.func.isRequired
 };
