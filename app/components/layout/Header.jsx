@@ -45,21 +45,31 @@ export default class Header extends Component {
                     { menus }
                 </ul>
                 <div className="pull-right user-info">
-                    <Link to="/register">注册</Link>
-                    <div className="avatar">
-                        <img src="/public/imgs/users/avatar1.jpg" />
-                    </div>
-                    <div className="dropdown">
-                        <a className="dropdown-toggle main-background"  href="javascript:;" id="dropdownMenu1" data-toggle="dropdown">
-                            zhangboyce@gmail.com
-                            <span className="caret" />
-                        </a>
-                        <ul className="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
-                            <li role="presentation"><a role="menuitem" tabIndex="-1" href="#">个人信息</a></li>
-                            <li role="presentation" className="divider" />
-                            <li role="presentation"><a role="menuitem" tabIndex="-1" href="#">安全退出</a></li>
-                        </ul>
-                    </div>
+                    {
+                        global.user ?
+                            <div>
+                                <div className="avatar">
+                                    <img src="/public/imgs/users/avatar1.jpg" />
+                                </div>
+                                <div className="dropdown">
+                                    <a className="dropdown-toggle main-background"  href="javascript:;" id="dropdownMenu1" data-toggle="dropdown">
+                                        zhangboyce@gmail.com
+                                        <span className="caret" />
+                                    </a>
+                                    <ul className="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
+                                        <li role="presentation"><a role="menuitem" tabIndex="-1" href="#">个人信息</a></li>
+                                        <li role="presentation" className="divider" />
+                                        <li role="presentation"><a role="menuitem" tabIndex="-1" href="#">安全退出</a></li>
+                                    </ul>
+                                </div>
+                            </div> :
+
+                            <div className="user-login-register">
+                                <Link to="/user/register">注册</Link>
+                                <div className="vertical-line"></div>
+                                <Link to="/user/login">登录</Link>
+                            </div>
+                    }
                 </div>
             </nav>
 

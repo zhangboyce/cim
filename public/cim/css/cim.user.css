@@ -1,24 +1,28 @@
-.user-register-container {
+.user-container {
     position: relative;
 }
 
-.user-register-container img {
+.user-container img {
     width: 100%;
 }
 
-.user-register-container .register-content {
+.user-container > div {
     background-color: rgb(255, 255, 255);
     position: absolute;
+    opacity: 0.9;
+    filter: alpha(opacity=90);
+    border: rgb(220, 220, 220) solid 1px;
+}
+
+.user-container .register-content {
     top: 0;
     left: 20%;
     width: 60%;
     height: 100%;
     padding: 20px 10%;
-    border-left: rgb(224, 224, 224) solid 1px;
-    border-right: rgb(224, 224, 224) solid 1px;
 }
 
-.user-register-container .register-content > button {
+.user-container .register-content > button {
     position: absolute;
     bottom: 5%;
     right: 37%;
@@ -26,33 +30,33 @@
     color: rgb(255, 255, 255);
 }
 
-.user-register-container .register-content .input-panel {
+.user-container .register-content .input-panel {
     margin-top: 10px;
 }
 
-.user-register-container .register-content .input-panel input {
+.user-container .register-content .input-panel input {
     width: 70%;
     margin-right: 10px;
     display:inline-block;
     font-size: 14px;
 }
 
-.user-register-container .register-content .input-panel input:focus {
+.user-container .register-content .input-panel input:focus {
     border-color: rgb(131, 17, 21);
 }
 
-.user-register-container .register-content .input-panel span {
+.user-container .register-content .input-panel span {
     color: rgb(255, 0, 0);
     font-size: 12px;
 }
 
-.user-register-container .upload-panel {
+.user-container .upload-panel {
     margin-top: 20px;
     position: relative;
     width: 70%;
 }
 
-.user-register-container .upload-panel span.btn {
+.user-container .upload-panel span.btn {
     position: absolute;
     width: 70px;
     height: 26px;
@@ -64,7 +68,7 @@
     overflow: hidden;
 }
 
-.user-register-container .upload-panel input[type="file"] {
+.user-container .upload-panel input[type="file"] {
     position: absolute;
     top: 0;
     right: 0;
@@ -75,39 +79,39 @@
     cursor: pointer;
 }
 
-.user-register-container .upload-panel .upload-camera {
+.user-container .upload-panel .upload-camera {
     background-color: rgb(238, 238, 238);
     width: 100px;
     height: 100px;
     position: relative;
 }
 
-.user-register-container .upload-panel .upload-camera span.btn,
-.user-register-container .upload-panel .upload-camera input[type="file"] {
+.user-container .upload-panel .upload-camera span.btn,
+.user-container .upload-panel .upload-camera input[type="file"] {
     width: 100%;
     height: 100%;
     border: none;
 }
 
-.user-register-container .upload-panel .upload-camera i {
+.user-container .upload-panel .upload-camera i {
     color: rgb(102, 102, 102);
     position: absolute;
     top: 34%;
     left: 34%;
 }
 
-.user-register-container .upload-panel .upload-camera img {
+.user-container .upload-panel .upload-camera img {
     width: 100%;
     height: 100%;
 }
 
-.user-register-container .upload-panel .upload-explain {
+.user-container .upload-panel .upload-explain {
     position: absolute;
     top: 0;
     left: 135px;
 }
 
-.user-register-container .upload-panel .upload-explain p {
+.user-container .upload-panel .upload-explain p {
     font-size: 12px;
     margin-bottom: 0;
     margin-top: 10px;
@@ -119,4 +123,62 @@
     right: 45px;
     overflow: hidden;
     border: 1px solid rgb(131, 17, 21);
+}
+
+.user-container .login-content {
+    padding: 50px;
+    top: 10%;
+    left: 33%;
+    width: 37%;
+}
+
+.user-container .login-content .login-input {
+    margin-bottom: 10px;
+}
+
+.user-container .login-content .login-input input {
+    width: 80%;
+    display: inline-block;
+    margin-left: 18px;
+}
+
+.user-container .login-content .login-input input[type="password"] {
+    margin-left: 22px;
+}
+
+.user-container .login-content .login-input input:focus {
+    border-color: rgb(131, 17, 21);
+}
+
+.user-container .login-content .login-operator {
+    width: 80%;
+    margin-left: 45px;
+}
+
+.user-container .login-content .login-operator .forget-password {
+    width: 100%;
+    height: 30px;
+}
+
+.user-container .login-content .login-operator .forget-password a {
+    color: rgb(90, 90, 90);
+    font-size: 12px;
+}
+
+.user-container .login-content .login-operator .forget-password a:first-child {
+    float: left;
+}
+
+.user-container .login-content .login-operator .forget-password a:last-child {
+    float: right;
+}
+
+.user-container .login-content .login-operator .submit-btn {
+    text-align: center;
+}
+
+.user-container .login-content .login-operator .submit-btn button {
+    width: 100%;
+    background-color: rgb(131, 17, 21);
+    color: rgb(255, 255, 255);
 }

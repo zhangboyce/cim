@@ -42,6 +42,9 @@ module.exports = {
     stats: {
         colors: true // Nice colored output
     },
+    node: {
+        fs: "empty"
+    },
     // Create Sourcemaps for the bundle
     devtool: 'source-map'
 };

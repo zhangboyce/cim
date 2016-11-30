@@ -2,6 +2,7 @@
 
 import fetch from 'isomorphic-fetch';
 import _ from 'lodash';
+import config from '../../common/config';
 
 export function get(url, query) {
     url = buildUrl(url);
@@ -30,11 +31,12 @@ export function post(url, data) {
         body: JSON.stringify(data)
     };
     console.log(url);
+    console.log(options);
     return fetch(url, options).then(res => res.json());
 }
 
 const buildUrl = function(url) {
-    let host = config.get('host');
+    let host = `${config.get('HOST')}:${config.get('PORT')}`;
     if(!host) {
         throw new Error('未正确配置全局变量host, 无法发送api');
     }

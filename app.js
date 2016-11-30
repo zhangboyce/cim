@@ -7,6 +7,13 @@ const mongoose = require('mongoose');
 const render = require('koa-swig');
 const serve = require('koa-static');
 
+require("babel-register")({
+    presets: [
+        "es2015","react"
+    ],
+    extensions: ['.jsx', '.js']
+});
+
 const app = koa();
 
 app.use(function *(next) {
@@ -30,25 +37,31 @@ app.context.render = render({
     ext: 'html'
 });
 
-// server routers
-const activityRouter = require('./server_routers/activity.router.js');
-app.use(activityRouter.routes()).use(activityRouter.allowedMethods());
+app.keys = ['cim cim-2016'];
+app.use(require('koa-session')(app));
+
+require('./server_routers')(app);
 app.use(logger());
 
 app.use(require('koa-static-server')({rootDir: 'public', rootPath: '/public'}));
 
+// init config
+require('dotenv').config({silent: true});
+const env = process.env;
+const config = require('./common/config');
+config.set({ HOST: env.HOST, PORT: env.PORT });
+
 //koa router
 const koaRouter = require('koa-router')();
 koaRouter.get('/*', function *() {
-    console.log('------------');
-    yield this.render('index');
+    yield this.render('index', { config: config.getConfig() });
 });
 app.use(koaRouter.routes()).use(koaRouter.allowedMethods());
 
 //mongoose
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/cim');
+mongoose.connect(env.MONGO);
 
-const port = 8888;
+const port = env.PORT;
 app.listen(port);
 console.log('Activity Manager listening on port ' + port);

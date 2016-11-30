@@ -4,7 +4,7 @@ import React, {Component, PropTypes} from 'react';
 export default class InputPanel extends Component {
     constructor(props) {
         super(props);
-        this.state = { value: "", message: "" };
+        this.state = { value: ""};
         this.validate = this.validate.bind(this);
     }
 
@@ -29,15 +29,17 @@ export default class InputPanel extends Component {
                 if (validation.hasOwnProperty( prop )) {
                     let vf = validation[prop];
                     if (vf instanceof Function && !vf(value)) {
-                        this.setState({ message: prop });
                         ok = false;
+                        this.props.onValidate(this.props.name, { validation: false, message: prop });
                         break;
+                    } else if (vf instanceof Object && vf.func instanceof  Function) {
+                        vf.func(value, prop);
                     }
                 }
             }
 
             if (ok) {
-                this.setState({ message: "" });
+                this.props.onValidate(this.props.name, { validation: true, message: '' });
             }
         }
 
@@ -50,10 +52,10 @@ export default class InputPanel extends Component {
                        value={ this.state.value }
                        onChange={ this.handleChange.bind(this) }
                        onBlur={ this.handleBlur.bind(this) }
-                       type="text"
+                       type={ this.props.type }
                        placeholder={ this.props.placeholder }/>
                 {
-                    this.state.message && <span>{ this.state.message }</span>
+                    this.props.message && <span>{ this.props.message }</span>
                 }
             </div>
         )
@@ -62,7 +64,10 @@ export default class InputPanel extends Component {
 
 InputPanel.propTypes =  {
     onChange: PropTypes.func.isRequired,
+    onValidate: PropTypes.func.isRequired,
     name: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
     validation: PropTypes.object,
+    message: PropTypes.string,
     placeholder: PropTypes.string
 };

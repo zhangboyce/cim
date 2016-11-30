@@ -27,6 +27,7 @@
 </head>
 
 <body class="page-loading">
+    <script>CONFIG = {% autoescape false %} {{ config|json }} {% endautoescape %};</script>
     <div id="app">
     </div>
 </body>

@@ -9,7 +9,8 @@ export default combineReducers({
     hotColumns,
     columns,
     column,
-    columnFilters
+    columnFilters,
+    user
 });
 
 function global(state = {}, action) {
@@ -127,4 +128,45 @@ function columnFilters(state = {}, action) {
                 return state;
         }
     }
+}
+
+
+function user(state = {}, action) {
+    return combineReducers({
+        register
+    })(state, action);
+
+    function register(state = {
+        columnName: {},
+        name: {},
+        email: {},
+        password: {},
+        rePassword: {},
+        mobile: {}
+    }, action) {
+        switch (action.type){
+            case types.ADD_USER_INFO: {
+                let data = action.data;
+                let obj = {};
+                obj[data.name] = _.assign({}, state[data.name], { value: data.value });
+                return _.assign({}, state, obj);
+            }
+
+            case types.VALIDATE_USER_INFO: {
+                let data = action.data;
+                let vr = data.validateResult;
+                let obj = {};
+                obj[data.name] = _.assign({}, state[data.name], { validation: vr.validation, message: vr.message });
+                return _.assign({}, state, obj);
+            }
+
+            case types.REGISTER_USER_SUCCESS: {
+                return {};
+            }
+
+            default:
+                return state;
+        }
+    }
+
 }

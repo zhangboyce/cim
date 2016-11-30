@@ -25,6 +25,23 @@
     display: inline-block;
 }
 
+.header .user-info .user-login-register {
+    margin-right: 30px;
+}
+
+.header .user-info .user-login-register .vertical-line {
+    display: inline-block;
+    width: 1px;
+    background-color: white;
+    height: 10px;
+    margin: 0 6px;
+}
+
+.header .user-info .user-login-register a {
+    color: rgb(255, 255, 255);
+    font-size: 12px;
+}
+
 .header .dropdown {
     font-size: 14px;
 }

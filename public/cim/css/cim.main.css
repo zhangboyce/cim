@@ -20,6 +20,10 @@ a:hover {
     text-decoration: none;
 }
 
+input:focus {
+    border-color: rgb(131, 17, 21);
+}
+
 .main-background {
     background-color: rgb(131, 17, 21);
 }
