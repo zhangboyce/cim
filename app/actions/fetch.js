@@ -1,6 +1,6 @@
 'use strict';
 
-import fetch from 'isomorphic-fetch';
+import 'whatwg-fetch';
 import _ from 'lodash';
 import config from '../../common/config';
 
@@ -21,18 +21,14 @@ export function get(url, query) {
 
 export function post(url, data) {
     url = buildUrl(url);
-    let options = {
+    let opts = {
         method: 'POST',
-        credentials: 'include',
         headers: {
-            'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
     };
-    console.log(url);
-    console.log(options);
-    return fetch(url, options).then(res => res.json());
+    return fetch(url, opts).then(res => res.json());
 }
 
 const buildUrl = function(url) {

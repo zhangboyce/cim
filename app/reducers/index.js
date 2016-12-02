@@ -161,7 +161,14 @@ function user(state = {}, action) {
             }
 
             case types.REGISTER_USER_SUCCESS: {
-                return {};
+                return {
+                    columnName: {},
+                    name: {},
+                    email: {},
+                    password: {},
+                    rePassword: {},
+                    mobile: {}
+                };
             }
 
             default:

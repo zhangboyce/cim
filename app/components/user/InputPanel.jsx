@@ -4,15 +4,12 @@ import React, {Component, PropTypes} from 'react';
 export default class InputPanel extends Component {
     constructor(props) {
         super(props);
-        this.state = { value: ""};
         this.validate = this.validate.bind(this);
     }
 
     handleChange(e) {
         let value = e.target.value;
         this.validate(value);
-
-        this.setState({ value: value&&value.trim() ? value: "" });
         this.props.onChange(this.props.name, value);
     }
 
@@ -49,13 +46,13 @@ export default class InputPanel extends Component {
         return (
             <div className="input-panel">
                 <input className="form-control"
-                       value={ this.state.value }
+                       value={ this.props.value.value || '' }
                        onChange={ this.handleChange.bind(this) }
                        onBlur={ this.handleBlur.bind(this) }
                        type={ this.props.type }
                        placeholder={ this.props.placeholder }/>
                 {
-                    this.props.message && <span>{ this.props.message }</span>
+                    this.props.value.message && <span>{ this.props.value.message }</span>
                 }
             </div>
         )
@@ -68,6 +65,6 @@ InputPanel.propTypes =  {
     name: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
     validation: PropTypes.object,
-    message: PropTypes.string,
+    value: PropTypes.object,
     placeholder: PropTypes.string
 };

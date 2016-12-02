@@ -4,17 +4,21 @@ import { get, post } from './fetch';
 import * as types from '../constants/ActionTypes';
 import { reloaded } from './common';
 
-export function register(user) {
+export function register(user, avatarData) {
     let url = '/api/user/register';
     return dispatch => {
         return post(url, user).then(json => {
-            if (json.result._id) {
-                dispatch({
-                    type: types.REGISTER_USER_SUCCESS,
-                    data: user
+            if (json._id && avatarData) {
+                // chrome fetch error cannot be resolved, so use jquery ajax api to send big data.
+                $.post('/api/user/register/saveAvatar', { _id: json._id, avatarData: avatarData }, ()=> {
+                    console.log('Save avatar.')
                 });
             }
-        }) ;
+            dispatch({
+                type: types.REGISTER_USER_SUCCESS,
+                data: user
+            });
+        });
     };
 }
 

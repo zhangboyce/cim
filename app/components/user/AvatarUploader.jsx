@@ -8,7 +8,7 @@ export default class AvatarUploader extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { img: null, croppedImg: null, cropperOpen: false }
+        this.state = { img: null, cropperOpen: false }
     }
 
     handleFileChange(dataURI) {
@@ -16,7 +16,7 @@ export default class AvatarUploader extends Component {
     }
 
     handleSave(dataUrl) {
-        this.setState({ img: null, croppedImg: dataUrl, cropperOpen: false });
+        this.setState({ img: null, cropperOpen: false });
         this.props.onSaveAvatar(dataUrl);
     }
 
@@ -29,11 +29,11 @@ export default class AvatarUploader extends Component {
             <div className="upload-panel">
                 <div className="upload-camera">
                     <FileUploader onFileChange={ this.handleFileChange.bind(this) } />
-                    { this.state.croppedImg ? <img src={ this.state.croppedImg }/> : <i className="fa fa-camera fa-2x"/> }
+                    { this.props.avatarData ? <img src={ this.props.avatarData }/> : <i className="fa fa-camera fa-2x"/> }
                 </div>
                 <div className="upload-explain">
                     <p>上传头像(企业logo)</p>
-                    <p>文件小于512k</p>
+                    <p>文件小于512kb</p>
                 </div>
                 <FileUploader onFileChange={ this.handleFileChange.bind(this) } text="点击上传"/>
 
@@ -47,5 +47,6 @@ export default class AvatarUploader extends Component {
 };
 
 AvatarUploader.propTypes =  {
-    onSaveAvatar: PropTypes.func.isRequired
+    onSaveAvatar: PropTypes.func.isRequired,
+    avatarData: PropTypes.string
 };

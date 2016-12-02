@@ -22,45 +22,21 @@ class RegisterContainer extends Component {
         this.props.actions.validateUserInfo(name, validateResult);
     }
 
-    saveAvatarAsImg = () => {
-        const { register } = this.props;
-        let mobile = register.mobile.value;
-        let dataString = register.avatarUrl && register.avatarUrl.value;
-
-        if (!dataString) return;
-
-        let matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
-        if (matches.length !== 3) return;
-
-        let type = matches[1];
-        let data = new Buffer(matches[2], 'base64');
-
-        let imageTypeDetected = type.match(/\/(.*?)$/);
-        let path = `/public/imgs/users/${mobile}/${new Date().getTime()}.${imageTypeDetected[1]}`;
-
-        fs.writeFile(path, data, ()=> {
-            console.log('Saved to disk image attached by user:', path);
-        });
-        return path;
-    };
-
     handleSubmit() {
         const { register } = this.props;
-        let data = {};
-        data.columnName = register.columnName.value;
-        data.name = register.name.value;
-        data.email = register.email.value;
-        data.password = md5(register.password.value);
-        data.mobile = register.mobile.value;
+        let user = {};
+        user.columnName = register.columnName.value;
+        user.name = register.name.value;
+        user.email = register.email.value;
+        user.password = md5(register.password.value);
+        user.mobile = register.mobile.value;
 
-        let avatarPath = this.saveAvatarAsImg();
-        data.avatarPath = avatarPath;
-
-        this.props.actions.register(data);
+        let avatarData = register.avatarData && register.avatarData.value;
+        this.props.actions.register(user, avatarData);
     }
 
-    handleSaveAvatar(avatarUrl) {
-        this.props.actions.addUserInfo('avatarUrl', avatarUrl);
+    handleSaveAvatar(avatarData) {
+        this.props.actions.addUserInfo('avatarData', avatarData);
     }
 
     handleValidateEmailUnique(val, message) {
@@ -116,19 +92,19 @@ class RegisterContainer extends Component {
 
         return (
             <div className="register-content">
-                <InputPanel name="columnName" type="text" message={ register.columnName.message } validation={ validations.columnName} onValidate={ this.handleValidate.bind(this) } onChange={ this.handleChange.bind(this) } placeholder="频道名称"/>
-                <InputPanel name="name" message={ register.name.message } type="text" validation={ validations.name } onValidate={ this.handleValidate.bind(this) } onChange={ this.handleChange.bind(this) } placeholder="姓名"/>
-                <InputPanel name="email" message={ register.email.message } type="text" validation={ validations.email } onValidate={ this.handleValidate.bind(this) } onChange={ this.handleChange.bind(this) } placeholder="邮箱账号(企业邮箱)"/>
-                <InputPanel name="password" message={ register.password.message } type="password" validation={ validations.password } onValidate={ this.handleValidate.bind(this) } onChange={ this.handleChange.bind(this) } placeholder="输入密码(字母+数字6位或者以上)"/>
-                <InputPanel name="rePassword" message={ register.rePassword.message } type="password" validation={ validations.rePassword }  onValidate={ this.handleValidate.bind(this) } onChange={ this.handleChange.bind(this) } placeholder="再次输入密码"/>
-                <InputPanel name="mobile" message={ register.mobile.message } type="text" validation={ validations.mobile } onValidate={ this.handleValidate.bind(this) } onChange={ this.handleChange.bind(this) } placeholder="手机号码"/>
+                <InputPanel name="columnName" type="text" value={ register.columnName } validation={ validations.columnName} onValidate={ this.handleValidate.bind(this) } onChange={ this.handleChange.bind(this) } placeholder="频道名称"/>
+                <InputPanel name="name" value={ register.name } type="text" validation={ validations.name } onValidate={ this.handleValidate.bind(this) } onChange={ this.handleChange.bind(this) } placeholder="姓名"/>
+                <InputPanel name="email" value={ register.email } type="text" validation={ validations.email } onValidate={ this.handleValidate.bind(this) } onChange={ this.handleChange.bind(this) } placeholder="邮箱账号(企业邮箱)"/>
+                <InputPanel name="password" value={ register.password } type="password" validation={ validations.password } onValidate={ this.handleValidate.bind(this) } onChange={ this.handleChange.bind(this) } placeholder="输入密码(字母+数字6位或者以上)"/>
+                <InputPanel name="rePassword" value={ register.rePassword } type="password" validation={ validations.rePassword }  onValidate={ this.handleValidate.bind(this) } onChange={ this.handleChange.bind(this) } placeholder="再次输入密码"/>
+                <InputPanel name="mobile" value={ register.mobile } type="text" validation={ validations.mobile } onValidate={ this.handleValidate.bind(this) } onChange={ this.handleChange.bind(this) } placeholder="手机号码"/>
 
-                <AvatarUploader onSaveAvatar={ this.handleSaveAvatar.bind(this) }/>
+                <AvatarUploader avatarData={ register.avatarData && register.avatarData.value } onSaveAvatar={ this.handleSaveAvatar.bind(this) }/>
 
                 {
                     _.every(register, 'value', true) ?
                         <button type="button" className="btn" onClick={ this.handleSubmit.bind(this) }>注&nbsp;&nbsp;册</button> :
-                        <button type="button" disabled="disabled" className="btn">注&nbsp;&nbsp;册</button>
+                        <button type="button" className="btn" disabled="disabled" onClick={ this.handleSubmit.bind(this) }>注&nbsp;&nbsp;册</button>
                 }
             </div>
 
