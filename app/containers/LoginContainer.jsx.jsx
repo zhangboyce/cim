@@ -5,8 +5,6 @@ import { bindActionCreators } from 'redux';
 import { withRouter, browserHistory, Link } from 'react-router';
 import * as UseActions from '../actions/user';
 
-import InputPanel from '../components/user/InputPanel.jsx';
-
 class LoginContainer extends Component {
 
     constructor(props) {
@@ -43,8 +41,8 @@ class LoginContainer extends Component {
                 </div>
                 <div className="login-operator">
                     <div className="forget-password">
-                        <a href="#">注册</a>
-                        <a href="#">忘记密码</a>
+                        <Link to="/user/register">注册</Link>
+                        <Link to="/user/forgetPassword">忘记密码</Link>
                     </div>
                     <div className="submit-btn">
                         <button type="button" className="btn" onClick={ this.handleSubmit.bind(this) }>登&nbsp;&nbsp;录</button>

@@ -15,6 +15,7 @@ import ColumnDetailContainer from './containers/ColumnDetailContainer.jsx';
 import UserContainer from './containers/UserContainer.jsx';
 import RegisterContainer from './containers/RegisterContainer.jsx';
 import LoginContainer from './containers/LoginContainer.jsx';
+import ForgetPasswordContainer from './containers/ForgetPasswordContainer.jsx';
 
 import configureStore from './store/configureStore'
 
@@ -44,6 +45,7 @@ ReactDOM.render(
                 <Route path="user" component={ UserContainer }>
                     <Route path="register" component={ RegisterContainer } />
                     <Route path="login" component={ LoginContainer } />
+                    <Route path="forgetPassword" component={ ForgetPasswordContainer } />
                 </Route>
             </Route>
         </Router>

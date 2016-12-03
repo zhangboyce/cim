@@ -29,9 +29,9 @@ export function addUserInfo(name, value) {
     }
 }
 
-export function validateUserInfo(name, validateResult) {
+export function validateUserInfo(name, validateResult, massge) {
     return {
         type: types.VALIDATE_USER_INFO,
-        data: { name: name, validateResult: validateResult }
+        data: { name: name, validateResult: validateResult, message: massge }
     }
 }

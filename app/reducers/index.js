@@ -154,9 +154,8 @@ function user(state = {}, action) {
 
             case types.VALIDATE_USER_INFO: {
                 let data = action.data;
-                let vr = data.validateResult;
                 let obj = {};
-                obj[data.name] = _.assign({}, state[data.name], { validation: vr.validation, message: vr.message });
+                obj[data.name] = _.assign({}, state[data.name], { validateResult: data.validateResult, message: data.message });
                 return _.assign({}, state, obj);
             }
 

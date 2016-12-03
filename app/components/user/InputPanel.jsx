@@ -5,12 +5,13 @@ export default class InputPanel extends Component {
     constructor(props) {
         super(props);
         this.validate = this.validate.bind(this);
+        this.state = { message: '' };
     }
 
     handleChange(e) {
         let value = e.target.value;
         this.validate(value);
-        this.props.onChange(this.props.name, value);
+        this.props.onChange(value);
     }
 
     handleBlur(e) {
@@ -25,35 +26,36 @@ export default class InputPanel extends Component {
             for (let prop in validation) {
                 if (validation.hasOwnProperty( prop )) {
                     let vf = validation[prop];
-                    if (vf instanceof Function && !vf(value)) {
-                        ok = false;
-                        this.props.onValidate(this.props.name, { validation: false, message: prop });
-                        break;
-                    } else if (vf instanceof Object && vf.func instanceof  Function) {
-                        vf.func(value, prop);
+                    if (vf instanceof Function) {
+                        let result = vf(value);
+                        if (result instanceof Function) {
+                            result(prop);
+                        } else if(!result) {
+                            ok = false;
+                            this.props.onValidate(false, prop);
+                            break;
+                        }
                     }
                 }
             }
-
             if (ok) {
-                this.props.onValidate(this.props.name, { validation: true, message: '' });
+                this.props.onValidate(true, "");
             }
         }
 
     }
 
     render() {
+        const { value, type, placeholder } = this.props;
         return (
             <div className="input-panel">
                 <input className="form-control"
-                       value={ this.props.value.value || '' }
+                       value={ value.value || '' }
                        onChange={ this.handleChange.bind(this) }
                        onBlur={ this.handleBlur.bind(this) }
-                       type={ this.props.type }
-                       placeholder={ this.props.placeholder }/>
-                {
-                    this.props.value.message && <span>{ this.props.value.message }</span>
-                }
+                       type={ type || "text" }
+                       placeholder={ placeholder }/>
+                { !value.validateResult && value.message && <span>{ value.message }</span>}
             </div>
         )
     }
@@ -62,9 +64,8 @@ export default class InputPanel extends Component {
 InputPanel.propTypes =  {
     onChange: PropTypes.func.isRequired,
     onValidate: PropTypes.func.isRequired,
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
+    type: PropTypes.string,
     validation: PropTypes.object,
-    value: PropTypes.object,
+    value: PropTypes.object.isRequired,
     placeholder: PropTypes.string
 };

@@ -14,12 +14,22 @@ import AvatarUploader from '../components/user/AvatarUploader.jsx';
 
 class RegisterContainer extends Component {
 
-    handleChange(name, value) {
-        this.props.actions.addUserInfo(name, value);
+    constructor(props) {
+        super(props);
+        this.handleValidate = this.handleValidate.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
-    handleValidate(name, validateResult) {
-        this.props.actions.validateUserInfo(name, validateResult);
+    handleChange(name) {
+        return (value) => {
+            this.props.actions.addUserInfo(name, value);
+        };
+    }
+
+    handleValidate(name) {
+        return (validateResult, message) => {
+            this.props.actions.validateUserInfo(name, validateResult, message);
+        };
     }
 
     handleSubmit() {
@@ -39,24 +49,28 @@ class RegisterContainer extends Component {
         this.props.actions.addUserInfo('avatarData', avatarData);
     }
 
-    handleValidateEmailUnique(val, message) {
-        $.get('/api/user/validate/email/unique', { email: val } , (result) => {
-            if (result) {
-                this.props.actions.validateUserInfo('email', { validation: true, message: '' });
-            } else {
-                this.props.actions.validateUserInfo('email', { validation: false, message: message });
-            }
-        });
+    handleValidateEmailUnique(val) {
+        return (message) => {
+            $.get('/api/user/validate/email/unique', { email: val } , (result) => {
+                if (result) {
+                    this.props.actions.validateUserInfo('email', true, "");
+                } else {
+                    this.props.actions.validateUserInfo('email', false, message);
+                }
+            });
+        }
     }
 
     handleValidateMobileUnique(val) {
-        $.get('/api/user/validate/mobile/unique', { mobile: val } , (result) => {
-            if (result) {
-                this.props.actions.validateUserInfo('mobile', { validation: true, message: '' });
-            } else {
-                this.props.actions.validateUserInfo('mobile', { validation: false, message: message });
-            }
-        });
+        return (message) => {
+            $.get('/api/user/validate/mobile/unique', { mobile: val } , (result) => {
+                if (result) {
+                    this.props.actions.validateUserInfo('mobile', true, "");
+                } else {
+                    this.props.actions.validateUserInfo('mobile', false, message);
+                }
+            });
+        }
     }
 
     render() {
@@ -73,7 +87,7 @@ class RegisterContainer extends Component {
             email: {
                 "邮箱账号不能为空!": val => val && val.trim(),
                 "邮箱账号格式不正确!": val => { return /^([\w]+(?:\.[\w]+)*)@((?:[a-z0-9]+(?:-[a-zA-Z0-9]+)*)+\.[a-z]{2,6})$/i.test(val) },
-                "该邮箱地址已被注册!": { func: (val, message) => { this.handleValidateEmailUnique(val, message) }}
+                "该邮箱地址已被注册!": val => { return this.handleValidateEmailUnique(val) }
             },
             password: {
                 "密码不能为空!": val => val && val.trim(),
@@ -86,18 +100,18 @@ class RegisterContainer extends Component {
             mobile: {
                 "手机号码不能为空!": val => val && val.trim(),
                 "手机号码格式不正确!": val => { return /^1[3|4|5|7|8][0-9]\d{8}$/.test(val) },
-                "该手机号码已被注册!": { func: (val, message) => { this.handleValidateMobileUnique(val, message) }}
+                "该手机号码已被注册!": val => { return this.handleValidateMobileUnique(val) }
             }
         };
 
         return (
             <div className="register-content">
-                <InputPanel name="columnName" type="text" value={ register.columnName } validation={ validations.columnName} onValidate={ this.handleValidate.bind(this) } onChange={ this.handleChange.bind(this) } placeholder="频道名称"/>
-                <InputPanel name="name" value={ register.name } type="text" validation={ validations.name } onValidate={ this.handleValidate.bind(this) } onChange={ this.handleChange.bind(this) } placeholder="姓名"/>
-                <InputPanel name="email" value={ register.email } type="text" validation={ validations.email } onValidate={ this.handleValidate.bind(this) } onChange={ this.handleChange.bind(this) } placeholder="邮箱账号(企业邮箱)"/>
-                <InputPanel name="password" value={ register.password } type="password" validation={ validations.password } onValidate={ this.handleValidate.bind(this) } onChange={ this.handleChange.bind(this) } placeholder="输入密码(字母+数字6位或者以上)"/>
-                <InputPanel name="rePassword" value={ register.rePassword } type="password" validation={ validations.rePassword }  onValidate={ this.handleValidate.bind(this) } onChange={ this.handleChange.bind(this) } placeholder="再次输入密码"/>
-                <InputPanel name="mobile" value={ register.mobile } type="text" validation={ validations.mobile } onValidate={ this.handleValidate.bind(this) } onChange={ this.handleChange.bind(this) } placeholder="手机号码"/>
+                <InputPanel value={ register.columnName } validation={ validations.columnName } onValidate={ this.handleValidate("columnName") } onChange={ this.handleChange("columnName") } placeholder="频道名称"/>
+                <InputPanel value={ register.name } validation={ validations.name } onValidate={ this.handleValidate("name") } onChange={ this.handleChange("name") } placeholder="姓名"/>
+                <InputPanel value={ register.email } validation={ validations.email } onValidate={ this.handleValidate("email") } onChange={ this.handleChange("email") } placeholder="邮箱账号(企业邮箱)"/>
+                <InputPanel value={ register.password } type="password"  validation={ validations.password } onValidate={ this.handleValidate("password") } onChange={ this.handleChange("password") } placeholder="输入密码(字母+数字6位或者以上)"/>
+                <InputPanel value={ register.rePassword } type="password"  validation={ validations.rePassword }  onValidate={ this.handleValidate("rePassword") } onChange={ this.handleChange("rePassword") } placeholder="再次输入密码"/>
+                <InputPanel value={ register.mobile }  validation={ validations.mobile } onValidate={ this.handleValidate("mobile") } onChange={ this.handleChange("mobile") } placeholder="手机号码"/>
 
                 <AvatarUploader avatarData={ register.avatarData && register.avatarData.value } onSaveAvatar={ this.handleSaveAvatar.bind(this) }/>
 
