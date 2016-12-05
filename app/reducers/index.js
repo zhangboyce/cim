@@ -130,11 +130,22 @@ function columnFilters(state = {}, action) {
     }
 }
 
-
 function user(state = {}, action) {
     return combineReducers({
-        register
+        register,
+        resetPassword,
+        sendForgetPasswordEmailResult,
     })(state, action);
+
+    function sendForgetPasswordEmailResult(state = false, action) {
+        switch (action.type){
+            case types.SEND_FORGET_PASSWORD_EMAIL_RESULT: {
+                return action.data;
+            }
+            default:
+                return state;
+        }
+    }
 
     function register(state = {
         columnName: {},
@@ -175,4 +186,36 @@ function user(state = {}, action) {
         }
     }
 
+    function resetPassword(state = {
+        password: {},
+        rePassword: {},
+        reseted: false
+    }, action) {
+        switch (action.type){
+            case types.RESET_PASS_ADD: {
+                let data = action.data;
+                let obj = {};
+                obj[data.name] = _.assign({}, state[data.name], { value: data.value });
+                return _.assign({}, state, obj);
+            }
+
+            case types.RESET_PASS_VALIDATE: {
+                let data = action.data;
+                let obj = {};
+                obj[data.name] = _.assign({}, state[data.name], { validateResult: data.validateResult, message: data.message });
+                return _.assign({}, state, obj);
+            }
+
+            case types.RESET_PASS_RESULT: {
+                return {
+                    password: {},
+                    rePassword: {},
+                    reseted: action.data
+                };
+            }
+
+            default:
+                return state;
+        }
+    }
 }

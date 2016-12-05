@@ -1,6 +1,6 @@
 'use strict';
 
-import 'whatwg-fetch';
+import fetch from 'isomorphic-fetch';
 import _ from 'lodash';
 import config from '../../common/config';
 

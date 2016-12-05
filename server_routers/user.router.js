@@ -5,7 +5,11 @@ const router = require('koa-router')();
 const fs = require('fs');
 const Buffer = require('buffer').Buffer;
 const path = require('path');
+const crypto = require('crypto');
+const randomstring = require('randomstring');
 const appDir = path.dirname(require.main.filename);
+const EmailUtils = require('../email/EmailUtils');
+const config = require('../common/config');
 
 router.post('/api/user/register', function *() {
     let data = yield parse(this);
@@ -13,6 +17,21 @@ router.post('/api/user/register', function *() {
     yield user.save();
 
     this.body = user;
+});
+
+router.post('/api/user/login', function *() {
+    let data = yield parse(this);
+    let value = data.value;
+    let password = data.password;
+
+    let user = yield User.findOne({ $or:[{ name: value }, { email: value }, { mobile: value }], password: password});
+    if (user) {
+        this.session.user = user;
+        this.body = true;
+
+    } else {
+        this.body = false;
+    }
 });
 
 router.post('/api/user/register/saveAvatar', function *() {
@@ -46,10 +65,85 @@ router.get('/api/user/validate/email/unique', function *() {
     this.body = user ? false : true;
 });
 
+router.get('/api/user/validate/email/registered', function *() {
+    let email = this.query.email;
+    let user = yield User.findOne({ email: email });
+
+    console.log(email);
+    console.log(JSON.stringify(user));
+
+    this.body = user ? true : false;
+});
+
 router.get('/api/user/validate/mobile/unique', function *() {
     let mobile = this.query.mobile;
     let user = yield User.findOne({ mobile: mobile });
     this.body = user ? false : true;
+});
+
+router.get('/api/user/validate/name/unique', function *() {
+    let name = this.query.name;
+    let user = yield User.findOne({ name: name });
+    this.body = user ? false : true;
+});
+
+router.post('/api/user/sendForgetPasswordEmail', function *() {
+    let data = yield parse(this);
+    let email = data.email;
+    let user = yield User.findOne( {email: email });
+    if (user) {
+        let validCode = user.validCode;
+        if (!validCode) {
+            let md5 = crypto.createHash('md5');
+            md5.update(email + new Date().getTime);
+            validCode = md5.digest('hex');
+            user.validCode = validCode;
+            yield user.save();
+        }
+        let validUrl = `http://${config.get('HOST')}:${config.get('PORT')}/api/user/toResetPassword/${validCode}`;
+        EmailUtils.sendEmail(email, 'forget-password.template.html', {url: validUrl});
+        this.body = true;
+        return;
+    }
+    this.body = false;
+});
+
+router.get('/api/user/toResetPassword/:validCode', function *() {
+    let validCode = this.params.validCode;
+    if (!validCode) {
+        this.body = '<script>alert("无效链接!");location.href="/user/forgetPassword";</script>';
+        return;
+    }
+    let user = yield User.findOne({validCode: validCode});
+    if (!user) {
+        this.body = ('<script>alert("链接已经失效!");location.href="/user/forgetPassword";</script>');
+        return;
+    }
+    this.body = (`<script>location.href="/user/resetPassword/${validCode}";</script>`);
+});
+
+router.post('/api/user/validCode', function *() {
+    let data = yield parse(this);
+    let validCode = data.validCode;
+    if (!validCode || validCode.length != 32) {
+        this.body = false;
+        return;
+    }
+    let user = yield User.findOne({validCode: validCode});
+    if (!user) {
+        this.body = false;
+        return;
+    }
+    this.body = true;
+});
+
+router.post('/api/user/resetPassword', function *() {
+    let data = yield parse(this);
+    let validCode = data.validCode;
+    let password = data.password;
+    yield User.update({ validCode: validCode }, { $set: { validCode: null, password: password } });
+
+    this.body = ('<script>location.href=`/user/login`;</script>');
 });
 
 module.exports = router;

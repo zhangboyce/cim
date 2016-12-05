@@ -50,26 +50,20 @@ class RegisterContainer extends Component {
     }
 
     handleValidateEmailUnique(val) {
-        return (message) => {
-            $.get('/api/user/validate/email/unique', { email: val } , (result) => {
-                if (result) {
-                    this.props.actions.validateUserInfo('email', true, "");
-                } else {
-                    this.props.actions.validateUserInfo('email', false, message);
-                }
-            });
+        return message => {
+            this.props.actions.validateEmailUnique(val, message);
         }
     }
 
     handleValidateMobileUnique(val) {
-        return (message) => {
-            $.get('/api/user/validate/mobile/unique', { mobile: val } , (result) => {
-                if (result) {
-                    this.props.actions.validateUserInfo('mobile', true, "");
-                } else {
-                    this.props.actions.validateUserInfo('mobile', false, message);
-                }
-            });
+        return message => {
+            this.props.actions.validateMobileUnique(val, message);
+        }
+    }
+
+    handleValidateNameUnique(val) {
+        return message => {
+            this.props.actions.validateNameUnique(val, message);
         }
     }
 
@@ -81,8 +75,9 @@ class RegisterContainer extends Component {
                 "频道名称包含非法字符!": val => { return /^[\w\u4e00-\u9fa5]+$/.test(val) }
             },
             name: {
-                "姓名不能为空!": val => val && val.trim(),
-                "姓名包含非法字符!": val => { return /^[\w\u4e00-\u9fa5]+$/.test(val) }
+                "用户名不能为空!": val => val && val.trim(),
+                "用户名包含非法字符!": val => { return /^[\w\u4e00-\u9fa5]+$/.test(val) },
+                "用户名已被注册!": val => { return this.handleValidateNameUnique(val) }
             },
             email: {
                 "邮箱账号不能为空!": val => val && val.trim(),
@@ -116,9 +111,9 @@ class RegisterContainer extends Component {
                 <AvatarUploader avatarData={ register.avatarData && register.avatarData.value } onSaveAvatar={ this.handleSaveAvatar.bind(this) }/>
 
                 {
-                    _.every(register, 'value', true) ?
+                    _.every(register, 'validateResult', true) ?
                         <button type="button" className="btn" onClick={ this.handleSubmit.bind(this) }>注&nbsp;&nbsp;册</button> :
-                        <button type="button" className="btn" disabled="disabled" onClick={ this.handleSubmit.bind(this) }>注&nbsp;&nbsp;册</button>
+                        <button type="button" className="btn" disabled="disabled">注&nbsp;&nbsp;册</button>
                 }
             </div>
 

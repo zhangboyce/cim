@@ -14,6 +14,17 @@
     border: rgb(220, 220, 220) solid 1px;
 }
 
+.user-container .prompt-panel p {
+    font-size: 14px;
+    color: rgb(153, 153, 153);
+}
+
+.user-container .prompt-panel a {
+    font-size: 12px;
+    text-decoration: underline;
+    padding-right: 10px;
+}
+
 .user-container .register-content {
     top: 0;
     left: 20%;
@@ -179,6 +190,72 @@
 
 .user-container .login-content .login-operator .submit-btn button {
     width: 100%;
+    background-color: rgb(131, 17, 21);
+    color: rgb(255, 255, 255);
+}
+
+.user-container .forget-password-content {
+    padding: 40px;
+    top: 10%;
+    left: 25%;
+    width: 50%;
+}
+
+.user-container .forget-password-content .input-panel {
+    height: 50px;
+}
+
+.user-container .forget-password-content .input-panel input:focus {
+    border-color: rgb(131, 17, 21);
+}
+
+.user-container .forget-password-content .input-panel span {
+    color: rgb(255, 0, 0);
+    font-size: 12px;
+}
+
+.user-container .forget-password-content .submit-btn {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.user-container .forget-password-content .submit-btn button {
+    width: 50%;
+    background-color: rgb(131, 17, 21);
+    color: rgb(255, 255, 255);
+}
+
+.user-container .reset-password-content {
+    padding: 40px;
+    top: 10%;
+    left: 25%;
+    width: 50%;
+}
+
+.user-container .reset-password-content input {
+    display: inline-block;
+    width: 75%;
+    margin-right: 10px;
+    margin-top: 15px;
+}
+
+.user-container .reset-password-content input:focus {
+    border-color: rgb(131, 17, 21);
+}
+
+.user-container .reset-password-content .input-panel span {
+    color: rgb(255, 0, 0);
+    font-size: 12px;
+}
+
+.user-container .reset-password-content .submit-btn {
+    text-align: center;
+    margin-top: 20px;
+    padding-right: 20%;
+}
+
+.user-container .reset-password-content .submit-btn button {
+    width: 25%;
     background-color: rgb(131, 17, 21);
     color: rgb(255, 255, 255);
 }

@@ -5,16 +5,18 @@ import { bindActionCreators } from 'redux';
 import { withRouter, browserHistory, Link } from 'react-router';
 import * as UseActions from '../actions/user';
 
+import md5 from 'MD5';
+
 class LoginContainer extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { name: '', password: '' };
+        this.state = { value: '', password: '' };
     }
 
-    handleChangeName(e) {
+    handleChangeValue(e) {
         let value = e.target.value;
-        this.setState({ name: value&&value.trim() ? value: "" });
+        this.setState({ value: value&&value.trim() ? value: "" });
     }
 
     handleChangePassword(e) {
@@ -23,9 +25,12 @@ class LoginContainer extends Component {
     }
 
     handleSubmit() {
-        console.log('-------' + _.every(_.values(this.state.validation), it => it));
-        console.log('state: ' + JSON.stringify(this.state))
+        let value = this.state.value;
+        let password = this.state.password;
 
+        if (value && password) {
+            this.props.actions.login(value, md5(password));
+        }
     }
 
     render() {
@@ -33,7 +38,7 @@ class LoginContainer extends Component {
             <div className="login-content">
                 <div className="login-input">
                     <span><i className="fa fa-user fa-2x"/></span>
-                    <input className="form-control" type="text" value={ this.state.name } onChange={ this.handleChangeName.bind(this) } />
+                    <input className="form-control" type="text" value={ this.state.value } onChange={ this.handleChangeValue.bind(this) } placeholder="用户名/邮箱地址/电话号码"/>
                 </div>
                 <div className="login-input">
                     <span><i className="fa fa-lock fa-2x"/></span>
@@ -54,6 +59,11 @@ class LoginContainer extends Component {
 
 }
 
+const mapStateToProps = state => {
+    return {
+
+    }
+};
 
 const mapDispatchToProps = dispath => {
     return {
@@ -62,6 +72,7 @@ const mapDispatchToProps = dispath => {
 };
 
 export default connect(
+    mapStateToProps,
     mapDispatchToProps
 )(withRouter(LoginContainer));
 

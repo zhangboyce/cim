@@ -7,6 +7,7 @@ var UserSchema = new mongoose.Schema({
     password: String,
     mobile: String,
     avatarName: String,
+    validCode: String,
     registerTime:{ type:Date,default:Date.now }
 });
 
