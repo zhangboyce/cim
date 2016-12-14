@@ -9,8 +9,8 @@
 .user-container > div {
     background-color: rgb(255, 255, 255);
     position: absolute;
-    opacity: 0.9;
-    filter: alpha(opacity=90);
+    /*opacity: 0.9;*/
+    /*filter: alpha(opacity=90);*/
     border: rgb(220, 220, 220) solid 1px;
 }
 
@@ -128,6 +128,14 @@
     margin-top: 10px;
 }
 
+.user-container .upload-panel .upload-explain p.upload-message {
+    color: rgb(255, 0, 0);
+}
+
+.user-container .upload-panel .modal {
+    top: 60px;
+}
+
 .img-preview {
     position: absolute;
     top: 15px;
@@ -159,6 +167,12 @@
 
 .user-container .login-content .login-input input:focus {
     border-color: rgb(131, 17, 21);
+}
+
+.user-container .login-content .login-message {
+    font-size: 12px;
+    color: rgb(255, 0, 0);
+    margin-left: 50px;
 }
 
 .user-container .login-content .login-operator {

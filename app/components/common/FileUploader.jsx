@@ -11,9 +11,15 @@ export default class FileUploader extends Component {
 
     handleFile(e) {
         let reader = new FileReader();
-        let file = e.target.files[0];
-
-        if (!file) return;
+        let file = e.target && e.target.files && e.target.files[0];
+        if (!file) {
+            this.props.onUploadMessage('No file!');
+            return;
+        }
+        if (this.props.maxFileSize && (file.size > this.props.maxFileSize * 1024)) {
+            this.props.onUploadMessage('File size out of limit!');
+            return;
+        }
 
         reader.onload = img => {
             ReactDom.findDOMNode(this.refs.in).value = '';
@@ -33,5 +39,7 @@ export default class FileUploader extends Component {
 
 FileUploader.propTypes =  {
     onFileChange: PropTypes.func.isRequired,
+    onUploadMessage: PropTypes.func.isRequired,
+    maxFileSize: PropTypes.number,
     text: PropTypes.string
 };

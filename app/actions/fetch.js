@@ -4,7 +4,7 @@ import fetch from 'isomorphic-fetch';
 import _ from 'lodash';
 import config from '../../common/config';
 
-export function get(url, query) {
+export function get(url, query, token) {
     url = buildUrl(url);
     if(query) {
         url += ('?' + Object.keys(query).map(q => {
@@ -13,18 +13,22 @@ export function get(url, query) {
     }
     let options = {
         method: 'GET',
-        credentials: 'include'
+        credentials: 'include',
+        headers: {
+            'Authorization': token
+        }
     };
     console.log(url);
     return fetch(url, options).then(res => res.json());
 }
 
-export function post(url, data) {
+export function post(url, data, token) {
     url = buildUrl(url);
     let opts = {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': token
         },
         body: JSON.stringify(data)
     };

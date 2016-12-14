@@ -10,6 +10,7 @@ const randomstring = require('randomstring');
 const appDir = path.dirname(require.main.filename);
 const EmailUtils = require('../email/EmailUtils');
 const config = require('../common/config');
+const jwt = require('jsonwebtoken');
 
 router.post('/api/user/register', function *() {
     let data = yield parse(this);
@@ -24,18 +25,28 @@ router.post('/api/user/login', function *() {
     let value = data.value;
     let password = data.password;
 
+    console.log(value);
+    console.log(password);
+
     let user = yield User.findOne({ $or:[{ name: value }, { email: value }, { mobile: value }], password: password});
     if (user) {
-        this.session.user = user;
-        this.body = true;
+        var token = jwt.sign({ user: {
+            columnName: user.columnName,
+            username: user.name,
+            email: user.email,
+            mobile: user.mobile,
+            avatarName: user.avatarName,
+            _id: user._id
+        } }, 'cim-auth-secret-key');
 
+        this.body = { status: 200, token: token };
     } else {
-        this.body = false;
+        this.body = { status: 403, token: null, statusText: '用户名或者密码不正确!' };
     }
 });
 
 router.post('/api/user/register/saveAvatar', function *() {
-    let data = yield parse(this, { limit: '10mb'});
+    let data = yield parse(this, { limit: '50mb'});
     let _id = data._id;
     let avatarData = data.avatarData;
 

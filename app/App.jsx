@@ -4,21 +4,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter, browserHistory } from 'react-router';
-import * as CommonActions from './actions/common';
+import * as UserActions from './actions/user';
 import Footer from './components/layout/Footer.jsx';
 import Header from './components/layout/Header.jsx';
 
 export default class App extends React.Component {
 
-    componentWillMount() {
-        this.props.actions.global();
-    }
-
     render () {
-        const { global } = this.props;
+        const { auth } = this.props;
         return (
             <div className="main">
-                { global && <Header global={ global }/> }
+                <Header auth={ auth } onLogout={ this.props.actions.logoutAndRedirect }/>
                 { this.props.children }
                 <Footer />
             </div>
@@ -28,13 +24,13 @@ export default class App extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        global: state.global
+        auth: state.user && state.user.auth
     }
 };
 
 const mapDispatchToProps = dispath => {
     return {
-        actions: bindActionCreators(Object.assign({}, CommonActions), dispath)
+        actions: bindActionCreators(Object.assign({}, UserActions), dispath)
     }
 };
 

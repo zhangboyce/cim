@@ -8,39 +8,52 @@ export default class AvatarUploader extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { img: null, cropperOpen: false }
-    }
+        this.state = {
+            img: null,
+            cropperOpen: false,
+            uploadResultMessage: '',
+            maxFileSize: 1024 // kb
+        }
 
-    handleFileChange(dataURI) {
-        this.setState({ img: dataURI, cropperOpen: true });
-    }
+    };
 
-    handleSave(dataUrl) {
+    handleUploadResult = message => {
+        this.setState({ uploadResultMessage: message });
+    };
+
+    handleFileChange = dataURI => {
+        this.setState({ img: dataURI, cropperOpen: true, uploadResultMessage: '' });
+    };
+
+    handleSave = dataUrl => {
         this.setState({ img: null, cropperOpen: false });
         this.props.onSaveAvatar(dataUrl);
-    }
+    };
 
-    handleClose() {
+    handleClose = () => {
         this.setState({ cropperOpen: false });
-    }
+    };
 
     render() {
         return (
             <div className="upload-panel">
                 <div className="upload-camera">
-                    <FileUploader onFileChange={ this.handleFileChange.bind(this) } />
+                    <FileUploader maxFileSize={ this.state.maxFileSize } onUploadMessage={ this.handleUploadResult } onFileChange={ this.handleFileChange } />
                     { this.props.avatarData ? <img src={ this.props.avatarData }/> : <i className="fa fa-camera fa-2x"/> }
                 </div>
                 <div className="upload-explain">
                     <p>上传头像(企业logo)</p>
-                    <p>文件小于512kb</p>
+                    <p>文件小于1Mb</p>
+                    { this.state.uploadResultMessage &&
+                        <p className="upload-message">{ this.state.uploadResultMessage }</p>
+                    }
                 </div>
-                <FileUploader onFileChange={ this.handleFileChange.bind(this) } text="点击上传"/>
+                <FileUploader maxFileSize={ this.state.maxFileSize } onUploadMessage={ this.handleUploadResult } onFileChange={ this.handleFileChange } text="点击上传"/>
 
                 <AvatarCropperModal img={ this.state.img }
-                                    onClose={ this.handleClose.bind(this) }
+                                    onClose={ this.handleClose }
                                     show={ this.state.cropperOpen }
-                                    onSave={ this.handleSave.bind(this) } />
+                                    onSave={ this.handleSave } />
             </div>
         );
     }

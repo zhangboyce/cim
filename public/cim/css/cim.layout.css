@@ -21,7 +21,7 @@
 .header .user-info {
     margin-top: 5px;
 }
-.header .user-info > div {
+.header .user-info .user-logout > div {
     display: inline-block;
 }
 

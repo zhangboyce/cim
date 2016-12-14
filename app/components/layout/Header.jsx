@@ -12,22 +12,22 @@ export default class Header extends Component {
             { name: "广告招商", path: "/column/ai", active: false },
             { name: "创意策划", path: "/column/cp", active: false },
             { name: "版权购买", path: "/column/cb", active: false } ]};
-
-        this.handleClickMenu = this.handleClickMenu.bind(this);
     }
 
-    handleClickMenu(name) {
-        return () => {
-            let menus = [...this.state.menus];
-            _.forEach(menus, menu => { menu.active = false});
-            let index = menus.findIndex(menu => menu.name == name);
-            menus[index].active = true;
-            this.setState({ menus: menus });
-        };
-    }
+    handleClickMenu = name => () => {
+        let menus = [...this.state.menus];
+        _.forEach(menus, menu => { menu.active = false});
+        let index = menus.findIndex(menu => menu.name == name);
+        menus[index].active = true;
+        this.setState({ menus: menus });
+    };
+
+    handleLogout = () => {
+        this.props.onLogout();
+    };
 
     render() {
-        const { global } = this.props;
+        const { auth } = this.props;
         let menus = this.state.menus.map(menu => {
             return (
                 <li key={ menu.name } className={ classnames({ "nav-item": true, active: menu.active })} onClick={ this.handleClickMenu(menu.name) } >
@@ -39,27 +39,27 @@ export default class Header extends Component {
         return (
             <nav className="navbar navbar-fixed-top navbar-dark header main-background">
                 <Link className="navbar-brand" href="/">
-                    <img src="/public/imgs/logo.png"/>
+                    <img src="/public/imgs/logo.jpg"/>
                 </Link>
                 <ul className="nav navbar-nav">
                     { menus }
                 </ul>
                 <div className="pull-right user-info">
                     {
-                        global.user ?
-                            <div>
+                        auth.isAuthenticated && auth.user ?
+                            <div className="user-logout">
                                 <div className="avatar">
-                                    <img src="/public/imgs/users/avatar1.jpg" />
+                                    <img src={ auth.user.avatarName ?  `/public/imgs/users/${auth.user._id}/${auth.user.avatarName}` : '/public/imgs/users/default.png'} />
                                 </div>
                                 <div className="dropdown">
                                     <a className="dropdown-toggle main-background"  href="javascript:;" id="dropdownMenu1" data-toggle="dropdown">
-                                        zhangboyce@gmail.com
+                                        { auth.user.username || auth.user.email || auth.user.mobile }
                                         <span className="caret" />
                                     </a>
                                     <ul className="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dropdownMenu1">
                                         <li role="presentation"><a role="menuitem" tabIndex="-1" href="#">个人信息</a></li>
                                         <li role="presentation" className="divider" />
-                                        <li role="presentation"><a role="menuitem" tabIndex="-1" href="#">安全退出</a></li>
+                                        <li role="presentation"><a role="menuitem" href="#" tabIndex="-1" onClick={ this.handleLogout }>安全退出</a></li>
                                     </ul>
                                 </div>
                             </div> :
@@ -78,6 +78,7 @@ export default class Header extends Component {
 }
 
 Header.propTypes = {
-    global: PropTypes.object.isRequired
+    auth: PropTypes.object.isRequired,
+    onLogout: PropTypes.func.isRequired
 };
 

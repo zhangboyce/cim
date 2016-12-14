@@ -3,6 +3,9 @@
 import { get, post } from './fetch';
 import * as types from '../constants/ActionTypes';
 import { reloaded } from './common';
+import { browserHistory } from 'react-router';
+import { checkHttpStatus } from '../utils';
+import jwtDecode from 'jwt-decode';
 
 export function register(user, avatarData) {
     let url = '/api/user/register';
@@ -117,14 +120,63 @@ export function validateResetPasswordInfo(name, validateResult, massge) {
     }
 }
 
-export function login(name, password) {
+export function login(value, password, redirect='/') {
     let url = '/api/user/login';
-    return dispath => {
-        return post(url, { value: value, password: password }).then(result => {
-            dispath({
-                type: types.LOGIN_RESULT,
-                data: result
+    return dispatch => {
+        dispatch(loginUserRequest());
+        return post(url, { value: value, password: password })
+            .then(response => {
+
+                console.log('login response: ' + JSON.stringify(response));
+
+                if (response.token) {
+                    dispatch(loginUserSuccess(response.token));
+                    browserHistory.push(redirect);
+                } else {
+                    dispatch(loginUserFailure(response));
+                }
+
             });
-        });
     };
+}
+
+
+export function loginUserSuccess(token) {
+    localStorage.setItem('token', token);
+    return {
+      type: types.LOGIN_USER_SUCCESS,
+      data: token
+    };
+}
+
+export function loginUserRequest() {
+    return {
+        type: types.LOGIN_USER_REQUEST
+    }
+}
+
+
+export function loginUserFailure(response) {
+    localStorage.removeItem('token');
+    return {
+        type: types.LOGIN_USER_FAILURE,
+        data: {
+            status: response.status,
+            statusText: response.statusText
+        }
+    }
+}
+
+export function logout() {
+    localStorage.removeItem('token');
+    return {
+        type: types.LOGOUT_USER
+    }
+}
+
+export function logoutAndRedirect() {
+    return (dispatch, state) => {
+        dispatch(logout());
+        browserHistory.push('/user/login');
+    }
 }

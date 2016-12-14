@@ -1,27 +1,19 @@
 'use strict';
 
+import { createReducer } from '../utils';
 import { combineReducers } from 'redux';
+
 import * as types from '../constants/ActionTypes';
 import _ from 'lodash';
+import jwtDecode from 'jwt-decode';
 
 export default combineReducers({
-    global,
     hotColumns,
     columns,
     column,
     columnFilters,
     user
 });
-
-function global(state = {}, action) {
-    switch (action.type){
-        case types.GLOBAL: {
-            return action.data;
-        }
-        default:
-            return state;
-    }
-}
 
 function hotColumns(state = {}, action) {
     return combineReducers({
@@ -135,6 +127,7 @@ function user(state = {}, action) {
         register,
         resetPassword,
         sendForgetPasswordEmailResult,
+        auth
     })(state, action);
 
     function sendForgetPasswordEmailResult(state = false, action) {
@@ -147,13 +140,66 @@ function user(state = {}, action) {
         }
     }
 
+    function auth(state = {
+        token: '',
+        user: {},
+        isAuthenticated: false,
+        isAuthenticating: false,
+        statusText: ''
+    }, action) {
+        switch (action.type){
+            case types.LOGIN_USER_REQUEST: {
+                return _.assign({}, state, {
+                    'isAuthenticating': true,
+                    'statusText': null
+                });
+            }
+
+            case types.LOGIN_USER_SUCCESS: {
+                let data = action.data;
+                return _.assign({}, state, {
+                    'isAuthenticating': false,
+                    'isAuthenticated': true,
+                    'token': data,
+                    'user': jwtDecode(data).user,
+                    'statusText': 'You have been successfully logged in.'
+                });
+            }
+
+            case types.LOGIN_USER_FAILURE: {
+                let data = action.data;
+                return _.assign({}, state, {
+                    'isAuthenticating': false,
+                    'isAuthenticated': false,
+                    'token': null,
+                    'userName': null,
+                    'statusText': `Authentication Error: ${data.status} ${data.statusText}`
+                });
+            }
+
+            case types.LOGOUT_USER: {
+                let data = action.data;
+                return _.assign({}, state, {
+                    'isAuthenticated': false,
+                    'token': null,
+                    'userName': null,
+                    'statusText': 'You have been successfully logged out.'
+                });
+            }
+
+            default:
+                return state;
+        }
+    }
+
     function register(state = {
         columnName: {},
         name: {},
         email: {},
         password: {},
         rePassword: {},
-        mobile: {}
+        mobile: {},
+        avatarData: { validateResult: true }
     }, action) {
         switch (action.type){
             case types.ADD_USER_INFO: {
@@ -177,7 +223,8 @@ function user(state = {}, action) {
                     email: {},
                     password: {},
                     rePassword: {},
-                    mobile: {}
+                    mobile: {},
+                    avatarData: { validateResult: true }
                 };
             }
 

@@ -64,4 +64,4 @@ mongoose.connect(env.MONGO);
 
 const port = env.PORT;
 app.listen(port);
-console.log('Activity Manager listening on port ' + port);
+console.log('cim listening on port ' + port);

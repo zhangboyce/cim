@@ -14,25 +14,16 @@ import AvatarUploader from '../components/user/AvatarUploader.jsx';
 
 class RegisterContainer extends Component {
 
-    constructor(props) {
-        super(props);
-        this.handleValidate = this.handleValidate.bind(this);
-        this.handleChange = this.handleChange.bind(this);
-    }
+    handleChange = name => value => {
+        this.props.actions.addUserInfo(name, value);
+    };
 
-    handleChange(name) {
-        return (value) => {
-            this.props.actions.addUserInfo(name, value);
-        };
-    }
+    handleValidate = name => (validateResult, message) => {
+        this.props.actions.validateUserInfo(name, validateResult, message);
+    };
 
-    handleValidate(name) {
-        return (validateResult, message) => {
-            this.props.actions.validateUserInfo(name, validateResult, message);
-        };
-    }
 
-    handleSubmit() {
+    handleSubmit = () => {
         const { register } = this.props;
         let user = {};
         user.columnName = register.columnName.value;
@@ -43,29 +34,23 @@ class RegisterContainer extends Component {
 
         let avatarData = register.avatarData && register.avatarData.value;
         this.props.actions.register(user, avatarData);
-    }
+    };
 
-    handleSaveAvatar(avatarData) {
+    handleSaveAvatar = avatarData => {
         this.props.actions.addUserInfo('avatarData', avatarData);
-    }
+    };
 
-    handleValidateEmailUnique(val) {
-        return message => {
-            this.props.actions.validateEmailUnique(val, message);
-        }
-    }
+    handleValidateEmailUnique = val => message => {
+        this.props.actions.validateEmailUnique(val, message)
+    };
 
-    handleValidateMobileUnique(val) {
-        return message => {
-            this.props.actions.validateMobileUnique(val, message);
-        }
-    }
+    handleValidateMobileUnique = val => message => {
+        this.props.actions.validateMobileUnique(val, message);
+    };
 
-    handleValidateNameUnique(val) {
-        return message => {
-            this.props.actions.validateNameUnique(val, message);
-        }
-    }
+    handleValidateNameUnique = val => message => {
+        this.props.actions.validateNameUnique(val, message);
+    };
 
     render() {
         const { register } = this.props;
@@ -108,11 +93,11 @@ class RegisterContainer extends Component {
                 <InputPanel value={ register.rePassword } type="password"  validation={ validations.rePassword }  onValidate={ this.handleValidate("rePassword") } onChange={ this.handleChange("rePassword") } placeholder="再次输入密码"/>
                 <InputPanel value={ register.mobile }  validation={ validations.mobile } onValidate={ this.handleValidate("mobile") } onChange={ this.handleChange("mobile") } placeholder="手机号码"/>
 
-                <AvatarUploader avatarData={ register.avatarData && register.avatarData.value } onSaveAvatar={ this.handleSaveAvatar.bind(this) }/>
+                <AvatarUploader avatarData={ register.avatarData && register.avatarData.value } onSaveAvatar={ this.handleSaveAvatar }/>
 
                 {
-                    _.every(register, 'validateResult', true) ?
-                        <button type="button" className="btn" onClick={ this.handleSubmit.bind(this) }>注&nbsp;&nbsp;册</button> :
+                    _.every(register, obj => obj.validateResult == true) ?
+                        <button type="button" className="btn" onClick={ this.handleSubmit }>注&nbsp;&nbsp;册</button> :
                         <button type="button" className="btn" disabled="disabled">注&nbsp;&nbsp;册</button>
                 }
             </div>

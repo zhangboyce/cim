@@ -18,10 +18,20 @@ import LoginContainer from './containers/LoginContainer.jsx';
 import ForgetPasswordContainer from './containers/ForgetPasswordContainer.jsx';
 import ResetPasswordContainer from './containers/ResetPasswordContainer.jsx';
 
+import { requireAuthentication } from './containers/AuthenticatedComponentContainer.jsx';
+
 import configureStore from './store/configureStore'
+import { loginUserSuccess } from './actions/user';
 
 import config from '../common/config';
 config.set(window.CONFIG);
+
+let store = configureStore();
+
+let token = localStorage.getItem('token');
+if (token !== null) {
+    store.dispatch(loginUserSuccess(token));
+}
 
 const Index = class extends Component {
     render() {
@@ -37,12 +47,12 @@ const Index = class extends Component {
 };
 
 ReactDOM.render(
-    <Provider store={ configureStore() }>
+    <Provider store={ store }>
         <Router history={ browserHistory }>
             <Route path="/" component={ App }>
-                <IndexRoute component={ Index } />
-                <Route path="column/:type" component={ ColumnListContainer } />
-                <Route path="column/:type/:id" component={ ColumnDetailContainer } />
+                <IndexRoute component={ requireAuthentication(Index) } />
+                <Route path="column/:type" component={ requireAuthentication(ColumnListContainer) } />
+                <Route path="column/:type/:id" component={ requireAuthentication(ColumnDetailContainer) } />
                 <Route path="user" component={ UserContainer }>
                     <Route path="register" component={ RegisterContainer } />
                     <Route path="login" component={ LoginContainer } />
