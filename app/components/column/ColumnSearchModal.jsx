@@ -11,15 +11,14 @@ export default class ColumnSearchModal extends Component {
         super(props);
         this.state = {keyword: ''}
     }
-    handleClearKeyword() {
-        this.setState({keyword: ''});
-    }
-    handleChange(keyword) {
+
+
+    handleChange = keyword => {
         this.setState({keyword: keyword});
-    }
+    };
 
     tags() {
-        const { columnFilters, handleSelectTag } = this.props;
+        const { columnFilters, onSelectTag } = this.props;
         let list = columnFilters.list;
         let selected = columnFilters.selected;
 
@@ -31,7 +30,7 @@ export default class ColumnSearchModal extends Component {
                         return (
                             <span key={ value }>
                                 <a href="javascript:;"
-                                   onClick={ ()=> { handleSelectTag(tag.name, value) } }
+                                   onClick={ ()=> { onSelectTag(tag.name, value) } }
                                    className={ classnames({
                                         selected: selected[tag.name] && selected[tag.name].findIndex(v => v == value) != -1
                                 }) }>{ value }</a>
@@ -43,10 +42,10 @@ export default class ColumnSearchModal extends Component {
         })
     }
 
-    handleSearch() {
+    handleSearch = () => {
         console.log(JSON.stringify(this.props.columnFilters.selected));
         console.log(this.state.keyword);
-    }
+    };
 
     render() {
         return (
@@ -60,16 +59,16 @@ export default class ColumnSearchModal extends Component {
                         </div>
                         <div className="modal-body">
                             <div className="column-search-input">
-                                <SearchInput onChange={ this.handleChange.bind(this) }
+                                <SearchInput onChange={ this.handleChange }
                                              keyword={ this.state.keyword }
-                                             onClearKeyword={ this.handleClearKeyword.bind(this) }/>
+                                             onSearch={ this.handleSearch }/>
                             </div>
                             <div className="column-search-tag">
                                 { this.tags() }
                             </div>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={ this.handleSearch.bind(this) }>搜    索</button>
+                            <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={ this.handleSearch }>搜    索</button>
                         </div>
                     </div>
                 </div>
@@ -80,5 +79,5 @@ export default class ColumnSearchModal extends Component {
 
 ColumnSearchModal.propTypes = {
     columnFilters: PropTypes.object.isRequired,
-    handleSelectTag: PropTypes.func.isRequired
+    onSelectTag: PropTypes.func.isRequired
 };

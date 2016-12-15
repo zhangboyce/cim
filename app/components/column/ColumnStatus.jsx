@@ -11,7 +11,7 @@ export default class ColumnStatus extends Component {
             <div className="column-status">
                 <div className="status-i">
                     <i className="fa fa-heart" />
-                    <span>2</span>
+                    <span>{ column.likes }</span>
                 </div>
                 <div className="status-i">
                     <i className="fa fa-rmb" />

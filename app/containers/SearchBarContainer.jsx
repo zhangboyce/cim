@@ -14,20 +14,22 @@ export default class SearchBarContainer extends Component {
         super(props);
         this.state = {keyword: ''}
     }
-    handleClearKeyword() {
-        this.setState({keyword: ''});
-    }
-    handleChange(keyword) {
-        this.setState({keyword: keyword});
-    }
 
     componentWillMount() {
-        this.props.actions.listColumnSearchTags();
+        this.props.actions.listColumnSearchTags(this.props.token);
     }
 
-    handleSelectTag(name, value) {
+    handleChange = keyword => {
+        this.setState({keyword: keyword});
+    };
+
+    handleSelectTag = (name, value) => {
         this.props.actions.toggleColumnSearchTag(name, value);
-    }
+    };
+
+    handleSearch = () => {
+        browserHistory.push('/column/search/' + this.state.keyword);
+    };
 
     render() {
         const { columnFilters } = this.props;
@@ -35,9 +37,9 @@ export default class SearchBarContainer extends Component {
             <div>
                 <div className="search-bar">
                     <div className="col-sm-3 col-input">
-                        <SearchInput onChange={ this.handleChange.bind(this) }
+                        <SearchInput onChange={ this.handleChange }
                                      keyword={ this.state.keyword }
-                                     onClearKeyword={ this.handleClearKeyword.bind(this) }/>
+                                     onSearch={ this.handleSearch }/>
                     <span>
                         <a data-toggle="modal" data-target=".column-search-modal" href="javascript:;">高级搜索</a>
                     </span>
@@ -46,7 +48,7 @@ export default class SearchBarContainer extends Component {
                 {
                     columnFilters &&
                     <ColumnSearchModal columnFilters={ columnFilters }
-                                       handleSelectTag={ this.handleSelectTag.bind(this) }/>
+                                       onSelectTag={ this.handleSelectTag }/>
                 }
             </div>
         );
@@ -55,7 +57,8 @@ export default class SearchBarContainer extends Component {
 
 const mapStateToProps = state => {
     return {
-        columnFilters: state.columnFilters
+        columnFilters: state.columnFilters,
+        token: state.user.auth.token
     }
 };
 

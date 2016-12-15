@@ -2,6 +2,7 @@
 
 export const LIST_HOT_COLUMNS = 'LIST_HOT_COLUMNS';
 export const LIST_COLUMNS = 'LIST_COLUMNS';
+export const LIST_SEARCH_COLUMN = 'LIST_SEARCH_COLUMN';
 export const VIEW_COLUMN = 'VIEW_COLUMN';
 export const RELOADED = 'RELOADED';
 export const GLOBAL = 'GLOBAL';

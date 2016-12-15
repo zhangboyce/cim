@@ -15,7 +15,7 @@ export default class ColumnList extends Component {
                 {
                     _.map(columns, column => {
                         return (
-                            <Column column={ column } type={ type } key={ column.id }/>
+                            <Column column={ column } type={ type } key={ column._id }/>
                         )
                     })
                 }
@@ -26,5 +26,5 @@ export default class ColumnList extends Component {
 
 ColumnList.propTypes = {
     columns: PropTypes.array.isRequired,
-    type: PropTypes.string.isRequired
+    type: PropTypes.string
 };

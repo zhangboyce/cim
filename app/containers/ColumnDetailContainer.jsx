@@ -13,23 +13,26 @@ import ColumnDetail from './../components/column/ColumnDetail.jsx';
 class ColumnDetailContainer extends Component {
 
     componentWillMount() {
-        this.props.actions.viewColumn(this.props.params.id);
+        this.viewColumn(this.props.params._id);
     }
 
     componentWillReceiveProps(newProps) {
         let params = this.props.params, newParams = newProps.params;
-        if (params.id != newParams.id) {
-            this.props.actions.viewColumn(newProps.params.id);
+        if (params._id != newParams._id) {
+            this.viewColumn(newProps.params._id);
         }
     }
 
-    render() {
-        const { column, params } = this.props;
+    viewColumn = _id => {
+        this.props.actions.viewColumn(_id, this.props.token);
+    };
 
-        console.log(JSON.stringify(params )+ '------=p=-');
+    render() {
+        const { params, column } = this.props;
 
         return (
             <div className="column-detail-container">
+                { column &&
                 <div className="column-detail-content">
                     <div className="column-back">
                         <Link to={`/column/${ params.type }`}>
@@ -49,9 +52,9 @@ class ColumnDetailContainer extends Component {
                         <button type="button">我要制作</button>
                     </div>
                     { column.prev &&
-                        <div className="column-prev">
-                            <Link to={`/column/${params.type}/${column.prev}`}><i className="fa fa-chevron-left fa-4x"/></Link>
-                        </div>
+                    <div className="column-prev">
+                        <Link to={`/column/${params.type}/${column.prev}`}><i className="fa fa-chevron-left fa-4x"/></Link>
+                    </div>
                     }
                     {
                         column.next &&
@@ -60,6 +63,7 @@ class ColumnDetailContainer extends Component {
                         </div>
                     }
                 </div>
+                }
             </div>
         );
     }
@@ -67,8 +71,20 @@ class ColumnDetailContainer extends Component {
 }
 
 const mapStateToProps = state => {
+    let columns = state.columns.list;
+    let column = state.columns.current;
+
+    let index = columns.findIndex(col => col._id == column._id);
+    if (index > 0) {
+        column.prev = columns[index - 1]._id;
+    }
+    if (index < columns.length - 1) {
+        column.next = columns[index + 1]._id;
+    }
+
     return {
-        column: state.column
+        column: column,
+        token: state.user.auth.token
     }
 };
 

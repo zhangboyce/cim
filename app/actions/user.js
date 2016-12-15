@@ -27,12 +27,12 @@ export function register(user, avatarData) {
 
 export function validateEmailUnique(val, message) {
     let url = '/api/user/validate/email/unique';
-    return dispath => {
+    return dispatch => {
         return get(url, { email: val }).then(result => {
             if (result) {
-                dispath(validateUserInfo('email', true, ''));
+                dispatch(validateUserInfo('email', true, ''));
             } else {
-                dispath(validateUserInfo('email', false, message));
+                dispatch(validateUserInfo('email', false, message));
             }
         });
     };
@@ -40,12 +40,12 @@ export function validateEmailUnique(val, message) {
 
 export function validateMobileUnique(val, message) {
     let url = '/api/user/validate/mobile/unique';
-    return dispath => {
+    return dispatch => {
         return get(url, { mobile: val }).then(result => {
             if (result) {
-                dispath(validateUserInfo('mobile', true, ''));
+                dispatch(validateUserInfo('mobile', true, ''));
             } else {
-                dispath(validateUserInfo('mobile', false, message));
+                dispatch(validateUserInfo('mobile', false, message));
             }
         });
     };
@@ -53,12 +53,12 @@ export function validateMobileUnique(val, message) {
 
 export function validateNameUnique(val, message) {
     let url = '/api/user/validate/name/unique';
-    return dispath => {
+    return dispatch => {
         return get(url, { name: val }).then(result => {
             if (result) {
-                dispath(validateUserInfo('name', true, ''));
+                dispatch(validateUserInfo('name', true, ''));
             } else {
-                dispath(validateUserInfo('name', false, message));
+                dispatch(validateUserInfo('name', false, message));
             }
         });
     };
@@ -66,18 +66,18 @@ export function validateNameUnique(val, message) {
 
 export function sendForgetPasswordEmail(email) {
     let url = '/api/user/sendForgetPasswordEmail';
-    return dispath => {
+    return dispatch => {
         return post(url, { email: email }).then(result => {
-            dispath(setForgetPasswordEmailResult(result));
+            dispatch(setForgetPasswordEmailResult(result));
         });
     };
 }
 
 export function resetPassword(validCode, password) {
     let url = '/api/user/resetPassword';
-    return dispath => {
+    return dispatch => {
         return post(url, { validCode: validCode, password: password }).then(result => {
-            dispath({
+            dispatch({
                 type: types.RESET_PASS_RESULT,
                 data: result
             });
@@ -174,9 +174,9 @@ export function logout() {
     }
 }
 
-export function logoutAndRedirect() {
+export function logoutAndRedirect(redirect='/user/login') {
     return (dispatch, state) => {
         dispatch(logout());
-        browserHistory.push('/user/login');
+        browserHistory.push(redirect);
     }
 }

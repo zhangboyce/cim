@@ -37,7 +37,7 @@ router.post('/api/user/login', function *() {
             mobile: user.mobile,
             avatarName: user.avatarName,
             _id: user._id
-        } }, 'cim-auth-secret-key');
+        } }, config.get('TOKEN_KEY'));
 
         this.body = { status: 200, token: token };
     } else {

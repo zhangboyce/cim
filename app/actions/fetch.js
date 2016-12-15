@@ -15,7 +15,7 @@ export function get(url, query, token) {
         method: 'GET',
         credentials: 'include',
         headers: {
-            'Authorization': token
+            'authorization': token
         }
     };
     console.log(url);
@@ -28,7 +28,7 @@ export function post(url, data, token) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': token
+            'authorization': token
         },
         body: JSON.stringify(data)
     };

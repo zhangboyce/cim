@@ -21,7 +21,7 @@ export default class Column extends Component {
         const { column, type } = this.props;
         return (
             <div className="column shadow">
-                <Link to={`/column/${type}/${column.id}`}>
+                <Link to={`/column/${type}/${column._id}`}>
                     <ColumnImg column={ column }/>
                 </Link>
                 <div className="column-detail">
@@ -65,7 +65,11 @@ export default class Column extends Component {
                     </ColumnName>
                 );
             default:
-                return null;
+                return this.getColumnComponent(
+                    <ColumnName name={ column.name } >
+                        <ColumnStatus column={ column }/>
+                    </ColumnName>
+                );
 
         }
     }
@@ -73,5 +77,5 @@ export default class Column extends Component {
 
 Column.propTypes = {
     column: PropTypes.object.isRequired,
-    type: PropTypes.string.isRequired
+    type: PropTypes.string
 };

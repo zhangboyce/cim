@@ -50,6 +50,7 @@ require('dotenv').config({silent: true});
 const env = process.env;
 const config = require('./common/config');
 config.set({ HOST: env.HOST, PORT: env.PORT });
+config.set({ TOKEN_KEY: env.TOKEN_KEY });
 
 //koa router
 const koaRouter = require('koa-router')();

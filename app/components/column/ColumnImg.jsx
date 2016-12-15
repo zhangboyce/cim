@@ -9,7 +9,7 @@ export default class ColumnImg extends Component {
         const { column } = this.props;
         return (
             <div className="column-img">
-                <img src={`/public/imgs/columns/column${column.id}.jpg`} />
+                <img src={`/public/imgs/columns/${column.name}.png`} />
             </div>
         );
     }

@@ -2,7 +2,7 @@
 import React, {Component, PropTypes} from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { withRouter, browserHistory } from 'react-router';
+import { withRouter, browserHistory, Link } from 'react-router';
 import * as ColumnActions from '../actions/column';
 import Title from './../components/layout/Title.jsx';
 import HotColumnList from '../components/column/HotColumnList.jsx';
@@ -12,7 +12,7 @@ import _ from 'lodash';
 class HotColumnContainer extends Component {
 
     componentWillMount() {
-        this.props.actions.listHotColumns();
+        this.props.actions.listHotColumns(this.props.token);
     }
 
     render() {
@@ -24,7 +24,7 @@ class HotColumnContainer extends Component {
                     hotColumns.reloaded && <HotColumnList hotColumns={ hotColumns.list } />
                 }
                 <div className="hot-column-more">
-                    <a href="#"><span className="tag tag-pill">More</span></a>
+                    <Link to="/column/ai"><span className="tag tag-pill">More</span></Link>
                 </div>
             </div>
         );
@@ -35,7 +35,8 @@ class HotColumnContainer extends Component {
 
 const mapStateToProps = state => {
     return {
-        hotColumns: state.hotColumns
+        hotColumns: state.hotColumns,
+        token: state.user.auth.token
     }
 };
 

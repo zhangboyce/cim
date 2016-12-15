@@ -11,6 +11,7 @@ import SearchBarContainer from './containers/SearchBarContainer.jsx';
 import HotColumnContainer from './containers/HotColumnContainer.jsx';
 import CooperativeUnitContainer from './containers/CooperativeUnitContainer.jsx';
 import ColumnListContainer from './containers/ColumnListContainer.jsx';
+import ColumnSearchListContainer from './containers/ColumnSearchListContainer.jsx';
 import ColumnDetailContainer from './containers/ColumnDetailContainer.jsx';
 import UserContainer from './containers/UserContainer.jsx';
 import RegisterContainer from './containers/RegisterContainer.jsx';
@@ -46,13 +47,26 @@ const Index = class extends Component {
     }
 };
 
+const ColumnListContainerWithBanner = class extends Component {
+    render() {
+        return (
+            <div>
+                <Banner />
+                <SearchBarContainer />
+                <ColumnListContainer {...this.props}/>
+            </div>
+        );
+    }
+};
+
 ReactDOM.render(
     <Provider store={ store }>
         <Router history={ browserHistory }>
             <Route path="/" component={ App }>
                 <IndexRoute component={ requireAuthentication(Index) } />
-                <Route path="column/:type" component={ requireAuthentication(ColumnListContainer) } />
-                <Route path="column/:type/:id" component={ requireAuthentication(ColumnDetailContainer) } />
+                <Route path="column/:type" component={ requireAuthentication(ColumnListContainerWithBanner) } />
+                <Route path="column/search/:keyword" component={ requireAuthentication(ColumnSearchListContainer) } />
+                <Route path="column/:type/:_id" component={ requireAuthentication(ColumnDetailContainer) } />
                 <Route path="user" component={ UserContainer }>
                     <Route path="register" component={ RegisterContainer } />
                     <Route path="login" component={ LoginContainer } />

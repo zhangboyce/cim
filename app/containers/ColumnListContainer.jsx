@@ -16,8 +16,7 @@ import _ from 'lodash';
 class ColumnListContainer extends Component {
 
     componentWillMount() {
-        this.props.actions.listColumns();
-        this.props.actions.listColumnSearchTags();
+        this.props.actions.listColumns(this.props.token);
     }
 
     getTitle(type) {
@@ -37,14 +36,10 @@ class ColumnListContainer extends Component {
         const { columns, filters, params } = this.props;
 
         return (
-            <div>
-                <Banner />
-                <SearchBarContainer />
-                <div className="column-list-container">
-                    { this.getTitle(params.type) }
-                    { filters && <ColumnListHeader filters={ filters } /> }
-                    { columns.reloaded && <ColumnList columns={ columns.list } type={ params.type } /> }
-                </div>
+            <div className="column-list-container">
+                { this.getTitle(params.type) }
+                { filters && <ColumnListHeader filters={ filters } /> }
+                { columns.reloaded && <ColumnList columns={ columns.list } type={ params.type } /> }
             </div>
         );
     }
@@ -54,7 +49,8 @@ class ColumnListContainer extends Component {
 const mapStateToProps = state => {
     return {
         columns: state.columns,
-        filters: state.columnFilters && state.columnFilters.list
+        filters: state.columnFilters && state.columnFilters.list,
+        token: state.user.auth.token
     }
 };
 

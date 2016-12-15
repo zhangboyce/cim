@@ -4,6 +4,7 @@ import React, {Component, PropTypes} from 'react';
 import { Link } from 'react-router';
 import classnames from 'classnames';
 import _ from 'lodash';
+import { browserHistory } from 'react-router';
 
 export default class Header extends Component {
     constructor(props) {
@@ -23,7 +24,8 @@ export default class Header extends Component {
     };
 
     handleLogout = () => {
-        this.props.onLogout();
+        let redirectAfterLogin = window.location.pathname;
+        this.props.onLogout(`/user/login?next=${redirectAfterLogin}`);
     };
 
     render() {

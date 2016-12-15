@@ -10,7 +10,7 @@ import jwtDecode from 'jwt-decode';
 export default combineReducers({
     hotColumns,
     columns,
-    column,
+    searchColumns,
     columnFilters,
     user
 });
@@ -41,10 +41,37 @@ function hotColumns(state = {}, action) {
     }
 }
 
-function columns(state = {}, action) {
+function searchColumns(state = {}, action) {
     return combineReducers({
         list,
         reloaded
+    })(state, action);
+
+    function list(state = [], action) {
+        switch (action.type){
+            case types.LIST_SEARCH_COLUMN: {
+                return  action.data;
+            }
+            default:
+                return state;
+        }
+    }
+
+    function reloaded(state = false, action) {
+        switch (action.type){
+            case types.RELOADED:
+                return action.data;
+            default:
+                return state;
+        }
+    }
+}
+
+function columns(state = {}, action) {
+    return combineReducers({
+        list,
+        reloaded,
+        current
     })(state, action);
 
     function list(state = [], action) {
@@ -65,15 +92,15 @@ function columns(state = {}, action) {
                 return state;
         }
     }
-}
 
-function column(state = {}, action) {
-    switch (action.type){
-        case types.VIEW_COLUMN: {
-            return action.data;
+    function current(state = {}, action) {
+        switch (action.type){
+            case types.VIEW_COLUMN: {
+                return action.data;
+            }
+            default:
+                return state;
         }
-        default:
-            return state;
     }
 }
 
@@ -162,7 +189,7 @@ function user(state = {}, action) {
                     'isAuthenticated': true,
                     'token': data,
                     'user': jwtDecode(data).user,
-                    'statusText': 'You have been successfully logged in.'
+                    'statusText': 'You have been logged in.'
                 });
             }
 
@@ -183,7 +210,7 @@ function user(state = {}, action) {
                     'isAuthenticated': false,
                     'token': null,
                     'userName': null,
-                    'statusText': 'You have been successfully logged out.'
+                    'statusText': 'You have been logged out.'
                 });
             }
 
