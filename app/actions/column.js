@@ -26,15 +26,18 @@ export function listColumnSearchTags(token) {
     return accessProtected(types.LIST_COLUMN_SEARCH_TAGS, url, { }, token)
 }
 
-export function searchColumns(keyword, token) {
+export function searchColumns(query, token) {
     let url = '/api/column/search/list';
-    return accessProtected(types.LIST_SEARCH_COLUMN, url, { keyword: keyword }, token)
+    return accessProtected(types.LIST_SEARCH_COLUMN, url, query, token)
 }
 
 function accessProtected(type, url, params, token) {
     return dispatch => {
         dispatch(reloaded(false));
         return get(url, params, token).then(response => {
+
+            console.log('--' + JSON.stringify(response));
+
             if (response.status == 200) {
                 dispatch({
                     type: type,
@@ -45,6 +48,9 @@ function accessProtected(type, url, params, token) {
                 dispatch(loginUserFailure(response));
                 browserHistory.push('/user/login');
             }
+            else if(response.status === 500) {
+                dispatch(reloaded(false));
+            }
         });
     };
 }
@@ -53,5 +59,12 @@ export function toggleColumnSearchTag(name, value) {
     return {
         type: types.TOGGLE_COLUMN_SEARCH_TAG,
         data: { name: name, value: value }
+    }
+}
+
+export function addColumnSearchKeyword(keyword) {
+    return {
+        type: types.ADD_COLUMN_SEARCH_KEYWORD,
+        data: keyword
     }
 }

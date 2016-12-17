@@ -8,19 +8,16 @@ import ColumnSearchModal from './../components/column/ColumnSearchModal.jsx';
 import SearchInput from './../components/common/SearchInput.jsx';
 import * as ColumnActions from '../actions/column';
 
-export default class SearchBarContainer extends Component {
+import _ from 'lodash';
 
-    constructor(props) {
-        super(props);
-        this.state = {keyword: ''}
-    }
+export default class SearchBarContainer extends Component {
 
     componentWillMount() {
         this.props.actions.listColumnSearchTags(this.props.token);
     }
 
     handleChange = keyword => {
-        this.setState({keyword: keyword});
+        this.props.actions.addColumnSearchKeyword(keyword);
     };
 
     handleSelectTag = (name, value) => {
@@ -28,17 +25,29 @@ export default class SearchBarContainer extends Component {
     };
 
     handleSearch = () => {
-        browserHistory.push('/column/search/' + this.state.keyword);
+        const { columnFilters } = this.props;
+        let selected = columnFilters.selected;
+
+        if (columnFilters.keyword || _.some(selected, s => s && s.length != 0)) {
+            let keyword = columnFilters.keyword || '';
+            let times  =  (selected['时长'] && selected['时长'].join(',')) || '';
+            let types  =  (selected['类型'] && selected['类型'].join(',')) || '';
+            let status =  (selected['状态'] && selected['状态'].join(',')) || '';
+            let sort   =  (selected['分类'] && selected['分类'].join(',')) || '';
+
+            browserHistory.push(`/column/search/keyword=${keyword}&times=${times}&types=${types}&status=${status}&sort=${sort}`);
+        }
     };
 
     render() {
         const { columnFilters } = this.props;
+        let keyword = columnFilters.keyword;
         return (
             <div>
                 <div className="search-bar">
                     <div className="col-sm-3 col-input">
                         <SearchInput onChange={ this.handleChange }
-                                     keyword={ this.state.keyword }
+                                     keyword={ keyword }
                                      onSearch={ this.handleSearch }/>
                     <span>
                         <a data-toggle="modal" data-target=".column-search-modal" href="javascript:;">高级搜索</a>
@@ -48,6 +57,8 @@ export default class SearchBarContainer extends Component {
                 {
                     columnFilters &&
                     <ColumnSearchModal columnFilters={ columnFilters }
+                                       onSearch={ this.handleSearch }
+                                       onChange={ this.handleChange }
                                        onSelectTag={ this.handleSelectTag }/>
                 }
             </div>

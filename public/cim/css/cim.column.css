@@ -121,6 +121,8 @@
 
 .column-list-container {
     text-align: center;
+    min-height: 420px;
+    padding: 50px 0;
 }
 
 .column-list {
@@ -357,4 +359,33 @@
 
 .column-detail-container .column-next {
     right: 20px;
+}
+
+.search-column-list-container .search-bar {
+    padding: 30px 10px;
+}
+
+.search-column-list-container .search-bar span {
+    margin: 5px 25%;
+}
+
+.search-column-list-container .search-bar i {
+    position: absolute;
+    right: 26%;
+    top: 12px;
+}
+
+.search-column-list-container .search-bar .search-input {
+    text-align: center;
+    position: relative;
+}
+
+.search-column-list-container .search-bar .search-input input {
+    width: 50%;
+    display: initial;
+}
+
+.search-column-list-container .search-bar > div {
+    float: none;
+    width: 100%;
 }

@@ -107,13 +107,24 @@ function columns(state = {}, action) {
 function columnFilters(state = {}, action) {
     return combineReducers({
         list,
-        selected
+        selected,
+        keyword
     })(state, action);
 
     function list(state = [], action) {
         switch (action.type){
             case types.LIST_COLUMN_SEARCH_TAGS: {
                 return  action.data;
+            }
+            default:
+                return state;
+        }
+    }
+
+    function keyword(state = '', action) {
+        switch (action.type){
+            case types.ADD_COLUMN_SEARCH_KEYWORD: {
+                return action.data;
             }
             default:
                 return state;

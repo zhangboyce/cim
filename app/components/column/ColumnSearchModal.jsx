@@ -1,21 +1,12 @@
 'use strict';
 
 import React, { Component, PropTypes } from 'react';
+import { browserHistory } from 'react-router';
 import SearchInput from './../common/SearchInput.jsx';
 import _ from 'lodash';
 import classnames from 'classnames'
 
 export default class ColumnSearchModal extends Component {
-
-    constructor(props) {
-        super(props);
-        this.state = {keyword: ''}
-    }
-
-
-    handleChange = keyword => {
-        this.setState({keyword: keyword});
-    };
 
     tags() {
         const { columnFilters, onSelectTag } = this.props;
@@ -42,12 +33,8 @@ export default class ColumnSearchModal extends Component {
         })
     }
 
-    handleSearch = () => {
-        console.log(JSON.stringify(this.props.columnFilters.selected));
-        console.log(this.state.keyword);
-    };
-
     render() {
+        const { columnFilters } = this.props;
         return (
             <div className="column-search-modal modal fade" >
                 <div className="modal-dialog" role="document">
@@ -59,16 +46,15 @@ export default class ColumnSearchModal extends Component {
                         </div>
                         <div className="modal-body">
                             <div className="column-search-input">
-                                <SearchInput onChange={ this.handleChange }
-                                             keyword={ this.state.keyword }
-                                             onSearch={ this.handleSearch }/>
+                                <SearchInput onChange={ this.props.onChange }
+                                             keyword={ columnFilters.keyword } />
                             </div>
                             <div className="column-search-tag">
                                 { this.tags() }
                             </div>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={ this.handleSearch }>搜    索</button>
+                            <button type="button" className="btn" data-dismiss="modal" onClick={ this.props.onSearch }>搜    索</button>
                         </div>
                     </div>
                 </div>
@@ -79,5 +65,7 @@ export default class ColumnSearchModal extends Component {
 
 ColumnSearchModal.propTypes = {
     columnFilters: PropTypes.object.isRequired,
-    onSelectTag: PropTypes.func.isRequired
+    onSelectTag: PropTypes.func.isRequired,
+    onChange: PropTypes.func.isRequired,
+    onSearch: PropTypes.func.isRequired
 };

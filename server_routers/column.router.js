@@ -16,19 +16,24 @@ router.get('/api/column/list/hot', function *() {
 router.get('/api/column/search/list', function *() {
     yield validToken.apply(this, [function*() {
         let keyword = this.query.keyword;
+        let times = this.query.times;
+        let types = this.query.types;
+        let status = this.query.status;
+        let sort = this.query.sort;
+
+        let match = {  };
         if (keyword) {
-            var re = new RegExp(keyword);
-            let columns = yield Column.find({ $or: [
-                { name: re },
-                { type: re },
-                { status: re },
-                { time: re },
-                { description: re }
-            ]});
-            this.body = { status: 200, data: columns }
-        } else {
-            this.body = { status: 200, data: [] }
+            let re = new RegExp(keyword);
+            match['$or'] = [ { name: re }, { type: re }, { status: re }, { time: re }, { description: re }]
         }
+        if (times) match['time'] = { $in: times.split(',') };
+        if (types) match['types'] = { $in: types.split(',') };
+        if (status) match['status'] = { $in: status.split(',') };
+
+        console.log('match: ' + JSON.stringify(match));
+
+        let columns = yield Column.find(match);
+        this.body = { status: 200, data: columns }
     }]);
 });
 
@@ -74,7 +79,12 @@ function *validToken(callback) {
         try {
             console.log('token: ' + token);
             let decoded = jwt.verify(token, config.get('TOKEN_KEY'));
-            yield callback.call(this);
+            try {
+                yield callback.call(this);
+            } catch (e) {
+                console.log(e);
+                this.body = { status: 500, data: [] }
+            }
         } catch (e) {
             console.log(e);
             this.body = { status: 401, statusText: 'Token is invalid.' };

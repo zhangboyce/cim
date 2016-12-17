@@ -64,8 +64,9 @@ ReactDOM.render(
         <Router history={ browserHistory }>
             <Route path="/" component={ App }>
                 <IndexRoute component={ requireAuthentication(Index) } />
+                <Route path="column/search/keyword=(:keyword)&times=(:times)&types=(:types)&status=(:status)&sort=(:sort)"
+                       component={ requireAuthentication(ColumnSearchListContainer) } />
                 <Route path="column/:type" component={ requireAuthentication(ColumnListContainerWithBanner) } />
-                <Route path="column/search/:keyword" component={ requireAuthentication(ColumnSearchListContainer) } />
                 <Route path="column/:type/:_id" component={ requireAuthentication(ColumnDetailContainer) } />
                 <Route path="user" component={ UserContainer }>
                     <Route path="register" component={ RegisterContainer } />

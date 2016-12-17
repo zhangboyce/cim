@@ -156,6 +156,11 @@ input:focus {
     margin-bottom: 20px;
 }
 
+.column-search-modal .modal-footer button {
+    background-color: rgb(131, 13, 21);
+    color: rgb(255, 255, 255);
+}
+
 .column-search-modal .column-search-input input:focus {
     border-color: rgb(131, 17, 21);
 }

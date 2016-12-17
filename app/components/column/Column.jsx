@@ -27,7 +27,7 @@ export default class Column extends Component {
                 <div className="column-detail">
                     { columnName }
                     { type === "cp" && <ColumnTag column={ column } /> }
-                    <ColumnDetail column={ column } />
+                    <ColumnDetail column={ column } type={ type }/>
                 </div>
             </div>
         );
