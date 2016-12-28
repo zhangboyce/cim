@@ -9,7 +9,7 @@ const crypto = require('crypto');
 const randomstring = require('randomstring');
 const appDir = path.dirname(require.main.filename);
 const EmailUtils = require('../email/EmailUtils');
-const config = require('../common/config');
+const config = require('config');
 const jwt = require('jsonwebtoken');
 
 router.post('/api/user/register', function *() {
@@ -37,7 +37,7 @@ router.post('/api/user/login', function *() {
             mobile: user.mobile,
             avatarName: user.avatarName,
             _id: user._id
-        } }, config.get('TOKEN_KEY'));
+        } }, config.get('token_key'));
 
         this.body = { status: 200, token: token };
     } else {
@@ -111,7 +111,7 @@ router.post('/api/user/sendForgetPasswordEmail', function *() {
             user.validCode = validCode;
             yield user.save();
         }
-        let validUrl = `http://${config.get('HOST')}:${config.get('PORT')}/api/user/toResetPassword/${validCode}`;
+        let validUrl = `http://${config.get('app.host')}:${config.get('app.port')}/api/user/toResetPassword/${validCode}`;
         EmailUtils.sendEmail(email, 'forget-password.template.html', {url: validUrl});
         this.body = true;
         return;

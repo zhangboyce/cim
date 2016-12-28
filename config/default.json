@@ -1,0 +1,17 @@
+{
+  "mongo": "mongodb://localhost:27017/cim",
+  "app": {
+    "host":"localhost",
+    "port":7878
+  },
+  "token_key":"cim-auth-secret-key",
+  "email": {
+    "host": "mail.ccegroup.cn",
+    "port": 25,
+    "secure": false,
+    "auth": {
+      "user": "Naodong@ccegroup.cn",
+      "pass": "abcd@1234"
+    }
+  }
+}

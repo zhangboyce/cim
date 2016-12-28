@@ -33,7 +33,7 @@ function hotColumns(state = {}, action) {
 
     function reloaded(state = false, action) {
         switch (action.type){
-            case types.RELOADED:
+            case types.RELOAD_PRE  + types.LIST_HOT_COLUMNS:
                 return action.data;
             default:
                 return state;
@@ -44,13 +44,14 @@ function hotColumns(state = {}, action) {
 function searchColumns(state = {}, action) {
     return combineReducers({
         list,
-        reloaded
+        reloaded,
+        pageSize
     })(state, action);
 
     function list(state = [], action) {
         switch (action.type){
             case types.LIST_SEARCH_COLUMN: {
-                return  action.data;
+                return [...state, ...action.data];
             }
             default:
                 return state;
@@ -59,11 +60,15 @@ function searchColumns(state = {}, action) {
 
     function reloaded(state = false, action) {
         switch (action.type){
-            case types.RELOADED:
+            case types.RELOAD_PRE + types.LIST_SEARCH_COLUMN:
                 return action.data;
             default:
                 return state;
         }
+    }
+
+    function pageSize(state = 12, action) {
+        return state;
     }
 }
 
@@ -86,7 +91,7 @@ function columns(state = {}, action) {
 
     function reloaded(state = false, action) {
         switch (action.type){
-            case types.RELOADED:
+            case types.RELOAD_PRE + types.LIST_COLUMNS:
                 return action.data;
             default:
                 return state;

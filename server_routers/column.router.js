@@ -2,7 +2,7 @@
 const parse = require('co-body');
 const Column = require('../models/Column');
 const router = require('koa-router')();
-const config = require('../common/config');
+const config = require('config');
 const jwt = require('jsonwebtoken');
 
 router.get('/api/column/list/hot', function *() {
@@ -21,6 +21,9 @@ router.get('/api/column/search/list', function *() {
         let status = this.query.status;
         let sort = this.query.sort;
 
+        let pageSize = parseInt(this.query.pageSize);
+        let page = parseInt(this.query.page);
+
         let match = {  };
         if (keyword) {
             let re = new RegExp(keyword);
@@ -32,7 +35,7 @@ router.get('/api/column/search/list', function *() {
 
         console.log('match: ' + JSON.stringify(match));
 
-        let columns = yield Column.find(match);
+        let columns = yield Column.find(match).skip(pageSize*(page - 1)).limit(pageSize);
         this.body = { status: 200, data: columns }
     }]);
 });
@@ -78,7 +81,7 @@ function *validToken(callback) {
     } else {
         try {
             console.log('token: ' + token);
-            let decoded = jwt.verify(token, config.get('TOKEN_KEY'));
+            let decoded = jwt.verify(token, config.get('token_key'));
             try {
                 yield callback.call(this);
             } catch (e) {

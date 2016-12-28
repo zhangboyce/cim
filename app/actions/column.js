@@ -33,23 +33,21 @@ export function searchColumns(query, token) {
 
 function accessProtected(type, url, params, token) {
     return dispatch => {
-        dispatch(reloaded(false));
+        dispatch(reloaded(types.RELOAD_PRE + type , false));
         return get(url, params, token).then(response => {
-
-            console.log('--' + JSON.stringify(response));
 
             if (response.status == 200) {
                 dispatch({
                     type: type,
                     data: response.data
                 });
-                dispatch(reloaded(true));
+                dispatch(reloaded(types.RELOAD_PRE + type , true));
             } else if(response.status === 401) {
                 dispatch(loginUserFailure(response));
                 browserHistory.push('/user/login');
             }
             else if(response.status === 500) {
-                dispatch(reloaded(false));
+                dispatch(reloaded(types.RELOAD_PRE + type , false));
             }
         });
     };

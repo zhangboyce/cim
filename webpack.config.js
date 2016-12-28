@@ -3,10 +3,10 @@
 // config/webpack.config.js
 var path = require('path');
 var webpack = require('webpack');
-var node_modules = path.resolve(__dirname, '../node_modules');
+var node_modules = path.resolve(__dirname, './node_modules');
 
-var dir_src = path.resolve(__dirname, '../app');
-var dir_build = path.resolve(__dirname, '../public/build');
+var dir_src = path.resolve(__dirname, './app');
+var dir_build = path.resolve(__dirname, './public/build');
 
 module.exports = {
     entry: path.resolve(dir_src, 'main.jsx'),

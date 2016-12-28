@@ -1,8 +1,8 @@
 import * as types from '../constants/ActionTypes';
 
-export function reloaded(data) {
+export function reloaded(type, data) {
     return {
-        type: types.RELOADED,
+        type: type,
         data: data
     }
 }

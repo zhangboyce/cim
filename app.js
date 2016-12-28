@@ -45,24 +45,21 @@ app.use(logger());
 
 app.use(require('koa-static-server')({rootDir: 'public', rootPath: '/public'}));
 
-// init config
-require('dotenv').config({silent: true});
-const env = process.env;
-const config = require('./common/config');
-config.set({ HOST: env.HOST, PORT: env.PORT });
-config.set({ TOKEN_KEY: env.TOKEN_KEY });
+const appConfig = require('./common/config');
+const config  = require('config');
+appConfig.set({ HOST: config.get("app.host"), PORT: config.get("app.port") });
 
 //koa router
 const koaRouter = require('koa-router')();
 koaRouter.get('/*', function *() {
-    yield this.render('index', { config: config.getConfig() });
+    yield this.render('index', { config: appConfig.getConfig() });
 });
 app.use(koaRouter.routes()).use(koaRouter.allowedMethods());
 
 //mongoose
 mongoose.Promise = global.Promise;
-mongoose.connect(env.MONGO);
+mongoose.connect(config.get('mongo'));
 
-const port = env.PORT;
+const port = config.get("app.port") || 7878;
 app.listen(port);
 console.log('cim listening on port ' + port);

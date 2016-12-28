@@ -5,8 +5,9 @@ import { bindActionCreators } from 'redux';
 import { withRouter, browserHistory } from 'react-router';
 import * as ColumnActions from '../actions/column';
 import ColumnList from '../components/column/ColumnList.jsx';
-import SearchLoading from '../components/common/SearchLoading.jsx';
+import SpinLoading from '../components/common/SpinLoading.jsx';
 import SearchBarContainer from './../containers/SearchBarContainer.jsx';
+import ScrollPagination from '../components/common/ScrollPagination.jsx';
 
 import _ from 'lodash';
 
@@ -20,27 +21,40 @@ class ColumnSearchListContainer extends Component {
         if (this.props.params != nextProps.params) this.query(nextProps.params);
     }
 
-    query = params => {
+    query = (params, page=1) => {
         let keyword = params.keyword;
         let types = params.types;
         let times = params.times;
         let status = params.status;
         let sort = params.sort;
 
-        let query = { keyword, types, times, status, sort };
+        let pageSize = this.props.searchColumns.pageSize;
+
+        let query = { page, pageSize, keyword, types, times, status, sort };
         this.props.actions.searchColumns(query, this.props.token);
     };
 
+    nextPage = page => {
+        this.query(this.props.params, page);
+    };
+
+    hasNextPage = () => {
+        let searchColumns = this.props.searchColumns;
+        return searchColumns.reloaded && (searchColumns.list.length % searchColumns.pageSize == 0);
+    };
+
     render() {
-        let columns = this.props.columns;
+        let searchColumns = this.props.searchColumns;
         return (
             <div className="search-column-list-container">
                 <SearchBarContainer />
-                <div className="column-list-container">
-                    { !columns.reloaded &&  <SearchLoading /> }
-                    { columns.reloaded && columns.list.length == 0  && <div> No results! </div> }
-                    { columns.reloaded && columns.list.length != 0 && <ColumnList columns={ columns.list } type="cp" /> }
-                </div>
+                <ScrollPagination next={ this.nextPage } hasNext={ this.hasNextPage }>
+                    <div className="column-list-container">
+                        { !searchColumns.reloaded &&  <SpinLoading /> }
+                        { searchColumns.reloaded && searchColumns.list.length == 0  && <div> No results! </div> }
+                        { searchColumns.reloaded && searchColumns.list.length != 0 && <ColumnList columns={ searchColumns.list } type="cp" /> }
+                    </div>
+                </ScrollPagination>
             </div>
         );
     }
@@ -49,7 +63,7 @@ class ColumnSearchListContainer extends Component {
 
 const mapStateToProps = state => {
     return {
-        columns: state.searchColumns,
+        searchColumns: state.searchColumns,
         token: state.user.auth.token
     }
 };

@@ -2,16 +2,9 @@
 
 let nodemailer = require('nodemailer');
 let EmailTemplates = require('swig-email-templates');
+let config = require("config");
 
-let mail = nodemailer.createTransport({
-    host: 'mail.ccegroup.cn',
-    port: 25,
-    secure: false, // use SSL
-    auth: {
-        user: 'Naodong@ccegroup.cn',
-        pass: 'abcd@1234'
-    }
-});
+let mail = nodemailer.createTransport(config.get("email"));
 
 let templates = new EmailTemplates({
     root: 'email/templates',
@@ -25,7 +18,7 @@ let sendEmail = function(to, templateName, context) {
             console.log('html: ' + html);
             console.log('subject: ' + subject);
             mail.sendMail({
-                sender: 'Naodong@ccegroup.cn',
+                sender: config.get("email.auth.user"),
                 to: to,
                 subject: subject,
                 html: html
