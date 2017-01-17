@@ -14,9 +14,8 @@ let templates = new EmailTemplates({
 let sendEmail = function(to, templateName, context) {
     return new Promise((resolve, reject) => {
         templates.render(templateName, context, function(err, html, text, subject) {
-            console.log('err: ' + err);
-            console.log('html: ' + html);
-            console.log('subject: ' + subject);
+            if (err) console.log(err);
+
             mail.sendMail({
                 sender: config.get("email.auth.user"),
                 to: to,
@@ -25,8 +24,12 @@ let sendEmail = function(to, templateName, context) {
             }, function (err, res) {
                 if(err) {
                     reject(err);
+                    console.log(err);
                 }else {
                     resolve(res);
+                    console.log('err: ' + err);
+                    console.log('html: ' + html);
+                    console.log('subject: ' + subject);
                 }
             });
         });

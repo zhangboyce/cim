@@ -1,17 +1,17 @@
 {
-  "mongo": "mongodb://localhost:27017/cim",
+  "mongo": "mongodb://cim_owner:%40Cmtv2016_cim_owner@123.207.141.52:27017/cim",
   "app": {
     "host":"localhost",
     "port":7878
   },
   "token_key":"cim-auth-secret-key",
   "email": {
-    "host": "mail.ccegroup.cn",
-    "port": 25,
-    "secure": false,
+    "host": "smtp.exmail.qq.com",
+    "port": 465,
+    "secure": true,
     "auth": {
-      "user": "Naodong@ccegroup.cn",
-      "pass": "abcd@1234"
+      "user": "tf@cctvxck.com",
+      "pass": "0okm)OKM"
     }
   }
 }

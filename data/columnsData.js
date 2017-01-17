@@ -82,7 +82,7 @@ let columns =  [
 ];
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost:27017/cim');
+mongoose.connect('mongodb://123.207.141.52:27017/cim');
 
 const Column = require('../models/Column');
 
