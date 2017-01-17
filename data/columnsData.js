@@ -81,8 +81,11 @@ let columns =  [
 `}
 ];
 
+var config = require('config');
+let url = config.get('mongo');
+
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://123.207.141.52:27017/cim');
+mongoose.connect(url);
 
 const Column = require('../models/Column');
 

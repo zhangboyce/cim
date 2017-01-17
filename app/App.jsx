@@ -8,7 +8,7 @@ import * as UserActions from './actions/user';
 import Footer from './components/layout/Footer.jsx';
 import Header from './components/layout/Header.jsx';
 
-export default class App extends React.Component {
+class App extends React.Component {
 
     render () {
         const { auth } = this.props;

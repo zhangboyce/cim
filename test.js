@@ -2,6 +2,9 @@ var config = require('config');
 let url = config.get('mongo');
 let mongoClient = require('mongodb').MongoClient;
 
+const mongoose = require('mongoose');
+mongoose.connect(url);
+
 console.log(url);
 let db = mongoClient.connect(url).then(db => {
     console.log("Connect mongo db: " + url);

@@ -10,7 +10,7 @@ import * as ColumnActions from '../actions/column';
 
 import _ from 'lodash';
 
-export default class SearchBarContainer extends Component {
+class SearchBarContainer extends Component {
 
     componentWillMount() {
         this.props.actions.listColumnSearchTags(this.props.token);
